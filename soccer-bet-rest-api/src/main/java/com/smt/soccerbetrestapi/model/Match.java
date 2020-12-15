@@ -1,28 +1,15 @@
 package com.smt.soccerbetrestapi.model;
 
 import com.smt.soccerbetrestapi.enums.MatchResult;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Value;
 
-@RequiredArgsConstructor
-@Getter
+@Value
 public class Match {
 
     private final Team homeTeam;
     private final Team awayTeam;
     private final MatchResult matchResult;
-    private final int winProb;
-    private final int drawProd;
+    private final double winProb;
+    private final double drawProd;
 
-    public double getExpectedPoints() {
-        return 0.0;
-    }
-
-    private double getPointsDifferenceForHomeTeam() {
-        return matchResult.getPoint() - getExpectedPoints();
-    }
-
-    public double getPointsDifference(boolean homeTeam) {
-        return homeTeam ? getPointsDifferenceForHomeTeam() : -getPointsDifferenceForHomeTeam();
-    }
 }
