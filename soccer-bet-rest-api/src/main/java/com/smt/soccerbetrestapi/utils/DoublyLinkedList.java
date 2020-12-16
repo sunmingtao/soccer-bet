@@ -11,7 +11,7 @@ public class DoublyLinkedList<T extends LinkedNode> extends ArrayList<T>{
         super.add(t);
         if (super.size() >= 2) {
             T lastNode = super.get(super.size() - 2);
-            //lastNode.setNext(t);
+            lastNode.setNext(t);
             t.setPrev(lastNode);
         }
         return true;
