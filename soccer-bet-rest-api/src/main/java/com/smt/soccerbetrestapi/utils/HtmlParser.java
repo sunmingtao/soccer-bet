@@ -1,5 +1,6 @@
 package com.smt.soccerbetrestapi.utils;
 
+import com.smt.soccerbetrestapi.enums.League;
 import com.smt.soccerbetrestapi.model.Match;
 import com.smt.soccerbetrestapi.model.Team;
 import com.smt.soccerbetrestapi.repo.TeamRepo;
@@ -18,17 +19,21 @@ import java.util.stream.Collectors;
 @Slf4j
 public class HtmlParser {
 
-    @SneakyThrows(IOException.class)
+    private static final String SOCCER_DATA_HOME = "https://projects.fivethirtyeight.com/soccer-predictions/";
+
     public static void main(String[] args) {
-        //Document doc = Jsoup.connect("https://projects.fivethirtyeight.com/soccer-predictions/premier-league/").get();
-//        Document doc = Jsoup.connect("https://projects.fivethirtyeight.com/soccer-predictions/la-liga/").get();
-        Document doc = Jsoup.connect("https://projects.fivethirtyeight.com/soccer-predictions/serie-a/").get();
+        loadLeague(League.LALIGA);
+        Team team = TeamRepo.teamRepo.getOrCreate("juventus");
+        team.getMatchStatsList().forEach(System.out::println);
+    }
+
+    @SneakyThrows(IOException.class)
+    public static void loadLeague(League league) {
+        Document doc = Jsoup.connect(SOCCER_DATA_HOME + league.getName()).get();
         Elements matchElements = doc.select(".games-container.completed").select(".match-container");
         List<Match> matches = matchElements.stream().map(element -> toMatch(element)).collect(Collectors.toList());
         Collections.reverse(matches);
         matches.forEach(Match::addToTeamMatchStats);
-        Team manCity = TeamRepo.teamRepo.getOrCreate("juventus");
-        manCity.getMatchStatsList().forEach(System.out::println);
     }
 
     private static Match toMatch(Element matchElement) {
@@ -46,8 +51,7 @@ public class HtmlParser {
         return new Match(date, homeTeam, awayTeam, homeScore, awayScore, homeProb, tieProb);
     }
 
-
     private static double toProb(String probStr) {
-        return Double.parseDouble(probStr.substring(0, probStr.length() - 1)) / 100;
+        return DoubleUtils.round(Double.parseDouble(probStr.substring(0, probStr.length() - 1)) / 100, 2);
     }
 }

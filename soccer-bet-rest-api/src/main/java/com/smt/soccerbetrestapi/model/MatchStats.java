@@ -1,6 +1,7 @@
 package com.smt.soccerbetrestapi.model;
 
 import com.smt.soccerbetrestapi.utils.DoubleUtils;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Objects;
@@ -8,6 +9,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
+@Getter
 public class MatchStats extends LinkedNode<MatchStats> {
 
     private final String opponent;
@@ -28,12 +30,19 @@ public class MatchStats extends LinkedNode<MatchStats> {
         return DoubleUtils.round(getPointsDifference() + Optional.ofNullable(getPrev()).map(prev ->  prev.getAccumulativePointsDiff()).orElse(0d), 2);
     }
 
-    public double getLastNMatchesPointsDiff(int n) {
+    public double getLast3MatchesPointsDiff() {
+        return getLastNMatchesPointsDiff(3);
+    }
+
+    public double getLast5MatchesPointsDiff() {
+        return getLastNMatchesPointsDiff(5);
+    }
+
+    protected double getLastNMatchesPointsDiff(int n) {
         double result = Stream.iterate(this, Objects::nonNull, MatchStats::getPrev).limit(n)
                 .reduce(0d, (partialResult, stat) -> partialResult + stat.getPointsDifference(), Double::sum);
         return DoubleUtils.round(result, 2);
     }
-
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
