@@ -27,7 +27,7 @@ public class HtmlParser {
         List<Match> matches = matchElements.stream().map(element -> toMatch(element)).collect(Collectors.toList());
         Collections.reverse(matches);
         matches.forEach(Match::addToTeamMatchStats);
-        Team manCity = TeamRepo.teamRepo.getOrCreate("napoli");
+        Team manCity = TeamRepo.teamRepo.getOrCreate("juventus");
         manCity.getMatchStatsList().forEach(System.out::println);
     }
 
