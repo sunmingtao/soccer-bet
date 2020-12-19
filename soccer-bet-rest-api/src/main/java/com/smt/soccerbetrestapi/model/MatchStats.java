@@ -1,6 +1,7 @@
 package com.smt.soccerbetrestapi.model;
 
 import com.smt.soccerbetrestapi.utils.DoubleUtils;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -10,24 +11,26 @@ import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Getter
+@EqualsAndHashCode
 public class MatchStats extends LinkedNode<MatchStats> {
 
     private final String opponent;
     private final boolean home;
-    private final int actualPoint;
+    private final int actualPoints;
     private final double winProb;
-    private final double drawProd;
+    private final double drawProb;
 
     public double getExpectedPoints() {
-        return DoubleUtils.round(winProb * 2 + drawProd, 2);
+        return DoubleUtils.round(winProb * 2 + drawProb, 2);
     }
 
     public double getPointsDifference() {
-        return DoubleUtils.round(actualPoint - getExpectedPoints(), 2);
+        return DoubleUtils.round(actualPoints - getExpectedPoints(), 2);
     }
 
     public double getAccumulativePointsDiff() {
-        return DoubleUtils.round(getPointsDifference() + Optional.ofNullable(getPrev()).map(prev ->  prev.getAccumulativePointsDiff()).orElse(0d), 2);
+        return DoubleUtils.round(getPointsDifference() + Optional.ofNullable(getPrev())
+                .map(MatchStats::getAccumulativePointsDiff).orElse(0d), 2);
     }
 
     public double getLast3MatchesPointsDiff() {
@@ -44,14 +47,27 @@ public class MatchStats extends LinkedNode<MatchStats> {
         return DoubleUtils.round(result, 2);
     }
 
+    public double getWinProb() {
+        return DoubleUtils.round(winProb, 2);
+    }
+
+    public double getDrawProb() {
+        return DoubleUtils.round(drawProb,2);
+    }
+
+    public String getHomeOrAway() {
+        return home ? "Home" : "Away";
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Opponent: ").append(opponent);
         sb.append(" Home: ").append(home);
         sb.append(" Win Prob: ").append(DoubleUtils.round(winProb, 2));
-        sb.append(" Draw Prob: ").append(DoubleUtils.round(drawProd, 2));
+        sb.append(" Draw Prob: ").append(DoubleUtils.round(drawProb, 2));
         sb.append(" Expected points: ").append(getExpectedPoints());
-        sb.append(" Actual points: ").append(actualPoint);
+        sb.append(" Actual points: ").append(actualPoints);
         sb.append(" Points diff: ").append(getPointsDifference());
         sb.append(" Accumulative points diff: ").append(getAccumulativePointsDiff());
         sb.append(" Last 3 matches points diff: ").append(getLastNMatchesPointsDiff(3));

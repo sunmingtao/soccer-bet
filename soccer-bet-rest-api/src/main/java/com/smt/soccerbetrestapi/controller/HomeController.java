@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 public class HomeController {
@@ -30,8 +30,10 @@ public class HomeController {
     }
 
     @GetMapping("/teams")
-    public Set<Team> teams() {
-        return TeamRepo.teamRepo.getTeams();
+    public List<Team> teams() {
+        return TeamRepo.teamRepo.getTeams().stream()
+                .sorted((team1, team2) -> team1.getName().compareTo(team2.getName()))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/team")

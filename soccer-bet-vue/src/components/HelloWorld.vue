@@ -1,19 +1,39 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <select v-model="teamSelected" @change="selectTeam($event)">
+      <option v-for="team in teams" :key="team.name" :value="team.name">{{ team.name }}</option>
+    </select>
+    <span>Selected: {{ teamSelected }}</span>
+
   </div>
 </template>
 
 <script>
 
 export default {
-  name: 'HelloWorld',
+
+  data() {
+    return {
+      teamSelected: "",
+      teams: [],
+      teamStats: []
+    }
+  },
+  methods: {
+    selectTeam(event) {
+      const teamName = event.target.value
+      this.axios.get(`http://localhost:8080/team?name=${teamName}`).then((response) => {
+        this.teamStats = response.data
+      })
+    }
+  },
   props: {
     msg: String
   },
   beforeMount: function(){
     this.axios.get("http://localhost:8080/teams").then((response) => {
-      console.log(response.data)
+      this.teams = response.data
     })
   },
 }

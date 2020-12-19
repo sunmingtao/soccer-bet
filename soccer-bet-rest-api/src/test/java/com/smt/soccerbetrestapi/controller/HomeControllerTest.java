@@ -10,12 +10,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @WebMvcTest(HomeController.class)
-public class HomeControllerTest {
+class HomeControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    public void shouldReturnDefaultMessage() throws Exception {
+    void shouldReturnDefaultMessage() throws Exception {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/"))
                 .andDo(MockMvcResultHandlers.print())

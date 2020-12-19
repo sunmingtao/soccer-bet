@@ -21,17 +21,15 @@ public class HtmlParser {
 
     private static final String SOCCER_DATA_HOME = "https://projects.fivethirtyeight.com/soccer-predictions/";
 
-    public static void main(String[] args) {
-        loadLeague(League.LALIGA);
-        Team team = TeamRepo.teamRepo.getOrCreate("juventus");
-        team.getMatchStatsList().forEach(System.out::println);
+    private HtmlParser() {
+        throw new IllegalStateException("Utility class");
     }
 
     @SneakyThrows(IOException.class)
     public static void loadLeague(League league) {
         Document doc = Jsoup.connect(SOCCER_DATA_HOME + league.getName()).get();
         Elements matchElements = doc.select(".games-container.completed").select(".match-container");
-        List<Match> matches = matchElements.stream().map(element -> toMatch(element)).collect(Collectors.toList());
+        List<Match> matches = matchElements.stream().map(HtmlParser::toMatch).collect(Collectors.toList());
         Collections.reverse(matches);
         matches.forEach(Match::addToTeamMatchStats);
     }
