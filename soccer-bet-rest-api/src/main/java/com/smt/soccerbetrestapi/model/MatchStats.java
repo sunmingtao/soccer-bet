@@ -59,6 +59,22 @@ public class MatchStats extends LinkedNode<MatchStats> {
         return home ? "Home" : "Away";
     }
 
+    public String getFavouriteOrUnderDog() {
+        return isFavourite() ? "Fav" : "Under";
+    }
+
+    private boolean isFavourite() {
+        return 2 * winProb > 1  - drawProb;
+    }
+
+    public double getLiability() {
+        return DoubleUtils.round((1/ winProb - 1) * 100, 2);
+    }
+
+    public double getProfit() {
+        return actualPoints == 2 ? -getLiability() : 95;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

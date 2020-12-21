@@ -17,4 +17,19 @@ public class Team {
         matchStatsList.add(matchStats);
     }
 
+    private MatchStats getLastMatch() {
+        return matchStatsList.get(matchStatsList.size() - 1);
+    }
+
+    public double getAccumulativePointsDiff() {
+        return getLastMatch().getAccumulativePointsDiff();
+    }
+
+    public double getLast3MatchesPointsDiff() {
+        return getLastMatch().getLast3MatchesPointsDiff();
+    }
+
+    public double getLast5MatchesPointsDiff() {
+        return getLastMatch().getLast5MatchesPointsDiff();
+    }
 }

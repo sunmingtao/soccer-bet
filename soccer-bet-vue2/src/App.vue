@@ -4,11 +4,15 @@
     <select v-model="teamSelected" @change="selectTeam($event)">
       <option v-for="team in teams" :key="team.name" :value="team.name">{{ team.name }}</option>
     </select>
-    <v-client-table :data="rows" :columns="columns" :options="options"> </v-client-table>
+    <v-client-table v-if="teamStats.length > 0" :data="teamStats" :columns="columns" :options="options"> </v-client-table>
+    <p>
+      Total Profit = {{ totalProfit }}
+    </p>
+    <p>
+      Total Profit as Fav = {{ totalProfitAsFav }}
+    </p>
+    <v-client-table :data="teams" :columns="teamColumns" :options="teamOptions"> </v-client-table>
 
-    <div>
-      {{ teamStats }}
-    </div>
   </div>
 </template>
 
@@ -21,12 +25,15 @@ export default {
       teamSelected: "",
       teams: [],
       teamStats: [],
-      columns: ['opponent', 'homeOrAway', 'winProb', 'drawProb', 'expectedPoints', 'actualPoints',
-        'pointsDifference', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff'],
+      columns: ['opponent', 'homeOrAway', 'favouriteOrUnderDog', 'winProb', 'drawProb', 'expectedPoints', 'actualPoints',
+        'pointsDifference', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff',
+        'liability', 'profit'],
+      teamColumns: ['name', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff'],
       options: {
         headings: {
           opponent: 'Opponent',
           homeOrAway: 'Home/Away',
+          favouriteOrUnderDog: 'Fav/Under',
           winProb: 'Win Prob',
           drawProb: 'Draw Prob',
           expectedPoints: 'Expected Points',
@@ -34,21 +41,43 @@ export default {
           pointsDifference: 'Points Diff',
           accumulativePointsDiff: 'Accumulative Points Diff',
           last3MatchesPointsDiff: 'Last 3 Points Diff',
-          last5MatchesPointsDiff: 'Last 5 Points Diff'
+          last5MatchesPointsDiff: 'Last 5 Points Diff',
+          liability: 'Liability',
+          profit: 'Profit'
         },
         perPage: 100,
         perPageValues: [100, 200]
       },
-      rows: []
+      teamOptions: {
+        headings: {
+          name: 'Team',
+          accumulativePointsDiff: 'Accumulative Points Diff',
+          last3MatchesPointsDiff: 'Last 3 Points Diff',
+          last5MatchesPointsDiff: 'Last 5 Points Diff'
+        },
+        sortable: ['name', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff'],
+        perPage: 100,
+        perPageValues: [100, 200]
+      }
     }
   },
   methods: {
     selectTeam(event) {
       const teamName = event.target.value
       this.$http.get(`http://localhost:8080/team?name=${teamName}`).then((response) => {
-        this.rows = response.data
         this.teamStats = response.data
       })
+    },
+    calculateProfit(teamStats) {
+      return teamStats.reduce((partialResult, currentValue) => partialResult + currentValue.profit, 0).toFixed(2);
+    }
+  },
+  computed: {
+    totalProfit() {
+      return this.calculateProfit(this.teamStats)
+    },
+    totalProfitAsFav() {
+      return this.calculateProfit(this.teamStats.filter( value => value.favouriteOrUnderDog == 'Fav'))
     }
   },
   beforeMount: function(){
