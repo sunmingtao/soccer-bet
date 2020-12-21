@@ -22,6 +22,7 @@ public class HomeController {
         HtmlParser.loadLeague(League.SERIE_A);
         HtmlParser.loadLeague(League.EPL);
         HtmlParser.loadLeague(League.LIGUE_1);
+        HtmlParser.loadLeague(League.BUNDESLIGA);
     }
 
     @GetMapping("/")
