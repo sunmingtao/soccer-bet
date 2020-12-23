@@ -1,35 +1,37 @@
-package com.smt.soccerbetrestapi.utils;
+package com.smt.soccerbetrestapi.service;
 
 import com.smt.soccerbetrestapi.enums.League;
 import com.smt.soccerbetrestapi.model.Match;
 import com.smt.soccerbetrestapi.model.Team;
 import com.smt.soccerbetrestapi.repo.TeamRepo;
+import com.smt.soccerbetrestapi.utils.DoubleUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
-public class HtmlParser {
+@Service
+public class SoccerDataService {
 
     private static final String SOCCER_DATA_HOME = "https://projects.fivethirtyeight.com/soccer-predictions/";
 
-    private HtmlParser() {
-        throw new IllegalStateException("Utility class");
-    }
-
     @SneakyThrows(IOException.class)
-    public static void loadLeague(League league) {
+    public List<Match> loadMatches(League league) {
         Document doc = Jsoup.connect(SOCCER_DATA_HOME + league.getName()).get();
         Elements matchElements = doc.select(".games-container.completed").select(".match-container");
-        List<Match> matches = matchElements.stream().map(HtmlParser::toMatch).collect(Collectors.toList());
+        return matchElements.stream().map(SoccerDataService::toMatch).collect(Collectors.toList());
+    }
+
+    public void loadLeague(League league) {
+        List<Match> matches = loadMatches(league);
         Collections.reverse(matches);
         matches.forEach(Match::addToTeamMatchStats);
     }
