@@ -1,16 +1,17 @@
 package com.smt.soccerbetrestapi.service;
 
 import com.smt.soccerbetrestapi.enums.League;
-import com.smt.soccerbetrestapi.model.Match;
+import com.smt.soccerbetrestapi.entity.Match;
 import com.smt.soccerbetrestapi.model.Team;
 import com.smt.soccerbetrestapi.repo.TeamRepo;
 import com.smt.soccerbetrestapi.utils.DoubleUtils;
+import com.smt.soccerbetrestapi.utils.SeasonUtils;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -23,11 +24,14 @@ public class SoccerDataService {
 
     private static final String SOCCER_DATA_HOME = "https://projects.fivethirtyeight.com/soccer-predictions/";
 
+    @Value("${season.start.year.month}")
+    private String seasonStart;
+
     @SneakyThrows(IOException.class)
     public List<Match> loadMatches(League league) {
         Document doc = Jsoup.connect(SOCCER_DATA_HOME + league.getName()).get();
         Elements matchElements = doc.select(".games-container.completed").select(".match-container");
-        return matchElements.stream().map(SoccerDataService::toMatch).collect(Collectors.toList());
+        return matchElements.stream().map(this::toMatch).collect(Collectors.toList());
     }
 
     public void loadLeague(League league) {
@@ -36,7 +40,7 @@ public class SoccerDataService {
         matches.forEach(Match::addToTeamMatchStats);
     }
 
-    private static Match toMatch(Element matchElement) {
+    private Match toMatch(Element matchElement) {
         String homeTeamName = matchElement.attr("data-team1");
         String awayTeamName = matchElement.attr("data-team2");
         Element matchTopTr = matchElement.select("tr.match-top").first();
@@ -48,7 +52,7 @@ public class SoccerDataService {
         int awayScore = Integer.parseInt(matchBottomTr.select("span.score").text());
         Team homeTeam = TeamRepo.teamRepo.getOrCreate(homeTeamName);
         Team awayTeam = TeamRepo.teamRepo.getOrCreate(awayTeamName);
-        return new Match(date, homeTeam, awayTeam, homeScore, awayScore, homeProb, tieProb);
+        return new Match(SeasonUtils.toFullDate(date, seasonStart), homeTeam, awayTeam, homeScore, awayScore, homeProb, tieProb);
     }
 
     private static double toProb(String probStr) {
