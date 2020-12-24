@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 
 
 @RunWith(JUnitPlatform.class)
-public class MatchStatsTest {
+class MatchStatsTest {
 
     private MatchStats matchStats1;
     private MatchStats matchStats2;
