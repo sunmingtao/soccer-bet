@@ -1,12 +1,9 @@
 package com.smt.soccerbetrestapi.controller;
 
 import com.smt.soccerbetrestapi.enums.League;
-import com.smt.soccerbetrestapi.model.Match;
 import com.smt.soccerbetrestapi.model.MatchStats;
-import com.smt.soccerbetrestapi.model.SimpleMatch;
 import com.smt.soccerbetrestapi.model.Team;
 import com.smt.soccerbetrestapi.repo.MatchRepo;
-import com.smt.soccerbetrestapi.repo.SimpleMatchRepo;
 import com.smt.soccerbetrestapi.repo.TeamRepo;
 import com.smt.soccerbetrestapi.service.SoccerDataService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +22,6 @@ public class HomeController {
 
     private final SoccerDataService soccerDataService;
     private final MatchRepo matchRepo;
-    private final SimpleMatchRepo simpleMatchRepo;
 
     @PostConstruct
     public void init() {
@@ -33,20 +30,18 @@ public class HomeController {
         soccerDataService.loadLeague(League.EPL);
         soccerDataService.loadLeague(League.LIGUE_1);
         soccerDataService.loadLeague(League.BUNDESLIGA);
+        matchRepo.saveAll(soccerDataService.loadMatches(League.BUNDESLIGA));
     }
 
     @GetMapping("/")
     public String home() {
-        SimpleMatch match = new SimpleMatch();
-        match.setMatchDate("2020");
-        simpleMatchRepo.save(match);
         return "Welcome";
     }
 
     @GetMapping("/teams")
     public List<Team> teams() {
         return TeamRepo.teamRepo.getTeams().stream()
-                .sorted((team1, team2) -> team1.getName().compareTo(team2.getName()))
+                .sorted(Comparator.comparing(Team::getName))
                 .collect(Collectors.toList());
     }
 
