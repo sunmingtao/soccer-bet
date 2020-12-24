@@ -30,7 +30,7 @@ public class HomeController {
         soccerDataService.loadLeague(League.EPL);
         soccerDataService.loadLeague(League.LIGUE_1);
         soccerDataService.loadLeague(League.BUNDESLIGA);
-        matchRepo.saveAll(soccerDataService.loadMatches(League.BUNDESLIGA));
+        matchRepo.saveAll(soccerDataService.loadMatches(League.LIGUE_1));
     }
 
     @GetMapping("/")
