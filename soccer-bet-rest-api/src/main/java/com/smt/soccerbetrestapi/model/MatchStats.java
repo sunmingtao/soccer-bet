@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Getter
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 public class MatchStats extends LinkedNode<MatchStats> {
 
     private final String opponent;
