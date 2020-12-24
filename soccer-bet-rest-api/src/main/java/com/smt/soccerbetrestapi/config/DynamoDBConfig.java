@@ -26,6 +26,9 @@ public class DynamoDBConfig {
     @Value("${amazon.aws.secretkey}")
     private String amazonAWSSecretKey;
 
+    @Value("${amazon.aws.region}")
+    private String amazonAWSRegion;
+
     public AWSCredentialsProvider amazonAWSCredentialsProvider() {
         return new AWSStaticCredentialsProvider(amazonAWSCredentials());
     }
@@ -50,6 +53,6 @@ public class DynamoDBConfig {
     @Bean
     public AmazonDynamoDB amazonDynamoDB() {
         return AmazonDynamoDBClientBuilder.standard().withCredentials(amazonAWSCredentialsProvider())
-                .withRegion(Regions.AP_SOUTHEAST_2).build();
+                .withRegion(Regions.fromName(amazonAWSRegion)).build();
     }
 }
