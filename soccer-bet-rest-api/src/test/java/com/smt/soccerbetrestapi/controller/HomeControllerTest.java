@@ -1,6 +1,7 @@
 package com.smt.soccerbetrestapi.controller;
 
 import com.smt.soccerbetrestapi.repo.MatchRepo;
+import com.smt.soccerbetrestapi.service.MatchStatsService;
 import com.smt.soccerbetrestapi.service.SoccerDataService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,9 @@ class HomeControllerTest {
 
     @MockBean
     private MatchRepo matchRepo;
+
+    @MockBean
+    private MatchStatsService matchStatsService;
 
     @Test
     void shouldReturnDefaultMessage() throws Exception {
