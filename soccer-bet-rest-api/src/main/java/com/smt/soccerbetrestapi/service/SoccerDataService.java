@@ -34,12 +34,6 @@ public class SoccerDataService {
         return matchElements.stream().map(this::toMatch).collect(Collectors.toList());
     }
 
-    public void loadLeague(League league) {
-        List<Match> matches = loadMatches(league);
-        Collections.reverse(matches);
-        matches.forEach(Match::addToTeamMatchStats);
-    }
-
     private Match toMatch(Element matchElement) {
         String homeTeamName = matchElement.attr("data-team1");
         String awayTeamName = matchElement.attr("data-team2");
@@ -50,9 +44,7 @@ public class SoccerDataService {
         double tieProb = toProb(matchTopTr.select("td.prob.tie-prob").text());
         Element matchBottomTr = matchElement.select("tr.match-bottom").first();
         int awayScore = Integer.parseInt(matchBottomTr.select("span.score").text());
-        Team homeTeam = TeamRepo.teamRepo.getOrCreate(homeTeamName);
-        Team awayTeam = TeamRepo.teamRepo.getOrCreate(awayTeamName);
-        return new Match(SeasonUtils.toFullDate(date, seasonStart), homeTeam, awayTeam, homeScore, awayScore, homeProb, tieProb);
+        return new Match(SeasonUtils.toFullDate(date, seasonStart), homeTeamName, awayTeamName, homeScore, awayScore, homeProb, tieProb);
     }
 
     private static double toProb(String probStr) {

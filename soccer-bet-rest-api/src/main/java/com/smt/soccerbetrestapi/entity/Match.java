@@ -8,6 +8,7 @@ import com.smt.soccerbetrestapi.converter.MatchDateCustomConverter;
 import com.smt.soccerbetrestapi.converter.TeamCustomConverter;
 import com.smt.soccerbetrestapi.model.MatchStats;
 import com.smt.soccerbetrestapi.model.Team;
+import com.smt.soccerbetrestapi.repo.TeamRepo;
 import com.smt.soccerbetrestapi.utils.SeasonUtils;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -21,14 +22,14 @@ import java.util.Date;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Match {
     private Date matchDate;
-    private Team homeTeam;
-    private Team awayTeam;
+    private String homeTeam;
+    private String awayTeam;
     private int homeScore;
     private int awayScore;
     private double winProb;
     private double drawProb;
 
-    public Match(Date matchDate, Team homeTeam, Team awayTeam, int homeScore,
+    public Match(Date matchDate, String homeTeam, String awayTeam, int homeScore,
                  int awayScore, double winProb, double drawProb) {
         this.matchDate = matchDate;
         this.homeTeam = homeTeam;
@@ -42,7 +43,7 @@ public class Match {
     @DynamoDBHashKey
     @EqualsAndHashCode.Include
     public String getId() {
-        return SeasonUtils.toFullDateString(matchDate) + "-" + homeTeam.getName() + "-" + awayTeam.getName();
+        return SeasonUtils.toFullDateString(matchDate) + "-" + homeTeam + "-" + awayTeam;
     }
 
     @DynamoDBTypeConverted(converter = MatchDateCustomConverter.class)
@@ -50,13 +51,13 @@ public class Match {
         return matchDate;
     }
 
-    @DynamoDBTypeConverted(converter = TeamCustomConverter.class)
-    public Team getHomeTeam() {
+    @DynamoDBAttribute
+    public String getHomeTeam() {
         return homeTeam;
     }
 
-    @DynamoDBTypeConverted(converter = TeamCustomConverter.class)
-    public Team getAwayTeam() {
+    @DynamoDBAttribute
+    public String getAwayTeam() {
         return awayTeam;
     }
 
@@ -80,13 +81,15 @@ public class Match {
         return drawProb;
     }
 
-    public void addToTeamMatchStats() {
-        homeTeam.addMatchStats(toMatchStats(true));
-        awayTeam.addMatchStats(toMatchStats(false));
+    public void addToTeamMatchStats(TeamRepo teamRepo) {
+        Team home = teamRepo.getOrCreate(homeTeam);
+        Team away = teamRepo.getOrCreate(awayTeam);
+        home.addMatchStats(toMatchStats(true));
+        away.addMatchStats(toMatchStats(false));
     }
 
     private MatchStats toMatchStats(boolean home) {
-        String opponent = home ? awayTeam.getName() : homeTeam.getName();
+        String opponent = home ? awayTeam : homeTeam;
         double localWinProb = home ? this.winProb : 1 - this.winProb - drawProb;
         return new MatchStats(opponent, home, getActualPoints(home), localWinProb, drawProb);
     }

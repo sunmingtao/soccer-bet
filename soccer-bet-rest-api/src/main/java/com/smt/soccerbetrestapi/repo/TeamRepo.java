@@ -7,8 +7,6 @@ import java.util.stream.Collectors;
 
 public class TeamRepo {
 
-    public static final TeamRepo teamRepo = new TeamRepo();
-
     private final Map<String, Team> teamMap = new HashMap<>();
 
     public Set<Team> getTeams() {
