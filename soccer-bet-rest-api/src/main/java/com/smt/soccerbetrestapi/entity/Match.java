@@ -40,6 +40,10 @@ public class Match {
         this.drawProb = drawProb;
     }
 
+    public void setId(String id) {
+        //Empty setter required by dynamodb
+    }
+
     @DynamoDBHashKey
     @EqualsAndHashCode.Include
     public String getId() {

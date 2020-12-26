@@ -1,9 +1,7 @@
 package com.smt.soccerbetrestapi.service;
 
-import com.smt.soccerbetrestapi.enums.League;
 import com.smt.soccerbetrestapi.entity.Match;
-import com.smt.soccerbetrestapi.model.Team;
-import com.smt.soccerbetrestapi.repo.TeamRepo;
+import com.smt.soccerbetrestapi.enums.League;
 import com.smt.soccerbetrestapi.utils.DoubleUtils;
 import com.smt.soccerbetrestapi.utils.SeasonUtils;
 import lombok.SneakyThrows;
@@ -15,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
