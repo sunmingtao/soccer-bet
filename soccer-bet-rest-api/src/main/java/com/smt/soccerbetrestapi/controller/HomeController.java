@@ -24,12 +24,12 @@ public class HomeController {
 
     @PostConstruct
     public void init() {
-        matchRepo.deleteAll();
-        matchRepo.saveAll(soccerDataService.loadMatches(League.LIGUE_1));
-        matchRepo.saveAll(soccerDataService.loadMatches(League.LALIGA));
-        matchRepo.saveAll(soccerDataService.loadMatches(League.EPL));
-        matchRepo.saveAll(soccerDataService.loadMatches(League.SERIE_A));
-        matchRepo.saveAll(soccerDataService.loadMatches(League.BUNDESLIGA));
+//        matchRepo.deleteAll();
+//        matchRepo.saveAll(soccerDataService.loadMatches(League.LIGUE_1));
+//        matchRepo.saveAll(soccerDataService.loadMatches(League.LALIGA));
+//        matchRepo.saveAll(soccerDataService.loadMatches(League.EPL));
+//        matchRepo.saveAll(soccerDataService.loadMatches(League.SERIE_A));
+//        matchRepo.saveAll(soccerDataService.loadMatches(League.BUNDESLIGA));
     }
 
     @GetMapping("/")

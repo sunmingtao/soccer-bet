@@ -3,7 +3,6 @@ package com.smt.soccerbetrestapi.service;
 import com.smt.soccerbetrestapi.entity.Match;
 import com.smt.soccerbetrestapi.model.MatchStats;
 import com.smt.soccerbetrestapi.model.Team;
-import com.smt.soccerbetrestapi.repo.MatchRepo;
 import com.smt.soccerbetrestapi.repo.TeamRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,14 +10,12 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
 public class MatchStatsService {
 
-    private final MatchRepo matchRepo;
+    private final MatchService matchService;
 
     public List<Team> findTeams() {
         return populateTeamRepo().getTeams().stream()
@@ -32,12 +29,9 @@ public class MatchStatsService {
 
     private TeamRepo populateTeamRepo() {
         TeamRepo teamRepo = new TeamRepo();
-        findAllMatches().sorted(Comparator.comparing(Match::getMatchDate))
+        matchService.findAllMatches().stream().sorted(Comparator.comparing(Match::getMatchDate))
                 .forEach(match -> match.addToTeamMatchStats(teamRepo));
         return teamRepo;
     }
 
-    private Stream<Match> findAllMatches() {
-        return StreamSupport.stream(matchRepo.findAll().spliterator(), false);
-    }
 }
