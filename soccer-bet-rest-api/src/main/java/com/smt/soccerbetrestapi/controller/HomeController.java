@@ -18,19 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HomeController {
 
-    private final SoccerDataService soccerDataService;
     private final MatchStatsService matchStatsService;
-    private final MatchRepo matchRepo;
-
-    @PostConstruct
-    public void init() {
-//        matchRepo.deleteAll();
-//        matchRepo.saveAll(soccerDataService.loadMatches(League.LIGUE_1));
-//        matchRepo.saveAll(soccerDataService.loadMatches(League.LALIGA));
-//        matchRepo.saveAll(soccerDataService.loadMatches(League.EPL));
-//        matchRepo.saveAll(soccerDataService.loadMatches(League.SERIE_A));
-//        matchRepo.saveAll(soccerDataService.loadMatches(League.BUNDESLIGA));
-    }
 
     @GetMapping("/")
     public String home() {
