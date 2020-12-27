@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class SoccerDataService {
@@ -24,11 +26,15 @@ public class SoccerDataService {
     @Value("${season.start.year.month}")
     private String seasonStart;
 
+    public List<Match> loadAllLeagueMatches() {
+        return Arrays.stream(League.values()).flatMap(this::loadMatches).collect(Collectors.toList());
+    }
+
     @SneakyThrows(IOException.class)
-    public List<Match> loadMatches(League league) {
+    private Stream<Match> loadMatches(League league) {
         Document doc = Jsoup.connect(SOCCER_DATA_HOME + league.getName()).get();
         Elements matchElements = doc.select(".games-container.completed").select(".match-container");
-        return matchElements.stream().map(this::toMatch).collect(Collectors.toList());
+        return matchElements.stream().map(this::toMatch);
     }
 
     private Match toMatch(Element matchElement) {

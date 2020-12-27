@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -19,7 +20,15 @@ public class MatchService {
 
     @Cacheable(value = "matchesCache", key = "{#root.methodName}")
     public List<Match> findAllMatches() {
-        log.info("Find all matches");
-        return StreamSupport.stream(matchRepo.findAll().spliterator(), false).collect(Collectors.toList());
+        return findAllMatchesNoCache().collect(Collectors.toList());
     }
+
+    public Stream<Match> findAllMatchesNoCache() {
+        return StreamSupport.stream(matchRepo.findAll().spliterator(), false);
+    }
+
+    public void saveAllMatches(Iterable<Match> matches) {
+        matchRepo.saveAll(matches);
+    }
+
 }

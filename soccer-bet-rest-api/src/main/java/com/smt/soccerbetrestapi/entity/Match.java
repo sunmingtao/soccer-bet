@@ -106,4 +106,9 @@ public class Match {
         }
         return score1 < score2 ? 0 : 1;
     }
+
+    @Override
+    public String toString() {
+        return getId();
+    }
 }
