@@ -1,9 +1,11 @@
 package com.smt.soccerbetrestapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.smt.soccerbetrestapi.utils.DoubleUtils;
 import com.smt.soccerbetrestapi.utils.DoublyLinkedList;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Optional;
 
@@ -33,5 +35,15 @@ public class Team {
 
     public double getLast5MatchesPointsDiff() {
         return getLastMatchStats().map(MatchStats::getLast5MatchesPointsDiff).orElse(0d);
+    }
+
+    public double getTotalProfit() {
+        return DoubleUtils.round(matchStatsList.stream().map(MatchStats::getProfit).reduce(0d, Double::sum), 2);
+    }
+
+    public double getTotalProfitAsFav() {
+        return DoubleUtils.round(matchStatsList.stream()
+                .filter(matchStats -> StringUtils.equalsIgnoreCase(matchStats.getFavouriteOrUnderDog(), "Fav"))
+                .map(MatchStats::getProfit).reduce(0d, Double::sum), 2);
     }
 }

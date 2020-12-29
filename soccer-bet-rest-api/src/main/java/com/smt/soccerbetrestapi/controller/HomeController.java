@@ -1,5 +1,6 @@
 package com.smt.soccerbetrestapi.controller;
 
+import com.smt.soccerbetrestapi.cron.MatchLoader;
 import com.smt.soccerbetrestapi.enums.League;
 import com.smt.soccerbetrestapi.model.MatchStats;
 import com.smt.soccerbetrestapi.model.Team;
@@ -18,7 +19,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HomeController {
 
+    private final MatchLoader matchLoader;
     private final MatchStatsService matchStatsService;
+
+    @PostConstruct
+    public void init() {
+        matchLoader.load();
+    }
 
     @GetMapping("/")
     public String home() {
