@@ -14,6 +14,9 @@ import java.util.stream.Stream;
 @EqualsAndHashCode(callSuper = false)
 public class MatchStats extends LinkedNode<MatchStats> {
 
+    private static final double COMMISSION = 0.05d;
+    private static final double LIABILITY = 100d;
+
     private final String opponent;
     private final boolean home;
     private final int actualPoints;
@@ -67,12 +70,10 @@ public class MatchStats extends LinkedNode<MatchStats> {
         return 2 * winProb > 1  - drawProb;
     }
 
-    public double getLiability() {
-        return DoubleUtils.round((1/ winProb - 1) * 100, 2);
-    }
-
     public double getProfit() {
-        return actualPoints == 2 ? -getLiability() : 95;
+        double win = LIABILITY / (1 - winProb) - LIABILITY;
+        double profit = actualPoints == 2 ? -LIABILITY : win * (1 - COMMISSION);
+        return DoubleUtils.round(profit, 2);
     }
 
     @Override

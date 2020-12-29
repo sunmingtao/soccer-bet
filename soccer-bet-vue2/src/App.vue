@@ -26,9 +26,9 @@ export default {
       teams: [],
       teamStats: [],
       columns: ['opponent', 'homeOrAway', 'favouriteOrUnderDog', 'winProb', 'drawProb', 'expectedPoints', 'actualPoints',
-        'pointsDifference', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff',
-        'liability', 'profit'],
-      teamColumns: ['name', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff'],
+        'pointsDifference', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff', 'profit'],
+      teamColumns: ['name', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff',
+        'totalProfit', 'totalProfitAsFav'],
       options: {
         headings: {
           opponent: 'Opponent',
@@ -42,7 +42,6 @@ export default {
           accumulativePointsDiff: 'Accumulative Points Diff',
           last3MatchesPointsDiff: 'Last 3 Points Diff',
           last5MatchesPointsDiff: 'Last 5 Points Diff',
-          liability: 'Liability',
           profit: 'Profit'
         },
         perPage: 100,
@@ -53,9 +52,12 @@ export default {
           name: 'Team',
           accumulativePointsDiff: 'Accumulative Points Diff',
           last3MatchesPointsDiff: 'Last 3 Points Diff',
-          last5MatchesPointsDiff: 'Last 5 Points Diff'
+          last5MatchesPointsDiff: 'Last 5 Points Diff',
+          totalProfit: 'Total profit',
+          totalProfitAsFav: 'Total profit as Fav'
         },
-        sortable: ['name', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff'],
+        sortable: ['name', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff',
+          'totalProfit', 'totalProfitAsFav'],
         perPage: 100,
         perPageValues: [100, 200]
       }

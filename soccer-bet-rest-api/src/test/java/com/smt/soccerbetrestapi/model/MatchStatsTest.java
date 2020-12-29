@@ -67,4 +67,16 @@ class MatchStatsTest {
         Assertions.assertEquals(1.6, matchStats5.getLastNMatchesPointsDiff(3));
         Assertions.assertEquals(2.4, matchStats6.getLastNMatchesPointsDiff(3));
     }
+
+    @Test
+    void getProfit() {
+        MatchStats matchStats = new MatchStats("", true, 1, 0.5, 0.25);
+        Assertions.assertEquals(95d, matchStats.getProfit());
+        matchStats = new MatchStats("", true, 2, 0.5, 0.25);
+        Assertions.assertEquals(-100d, matchStats.getProfit());
+        matchStats = new MatchStats("", true, 0, 0.25, 0.25);
+        Assertions.assertEquals(31.67d, matchStats.getProfit());
+        matchStats = new MatchStats("", true, 0, 0.75, 0.15);
+        Assertions.assertEquals(285d, matchStats.getProfit());
+    }
 }
