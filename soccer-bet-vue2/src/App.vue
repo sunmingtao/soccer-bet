@@ -11,6 +11,9 @@
     <p>
       Total Profit as Fav = {{ totalProfitAsFav }}
     </p>
+    <p>
+      Total Profit Back On Draw = {{ totalProfitBackOnDraw }}
+    </p>
     <v-client-table :data="teams" :columns="teamColumns" :options="teamOptions"> </v-client-table>
 
   </div>
@@ -26,9 +29,9 @@ export default {
       teams: [],
       teamStats: [],
       columns: ['opponent', 'homeOrAway', 'favouriteOrUnderDog', 'winProb', 'drawProb', 'expectedPoints', 'actualPoints',
-        'pointsDifference', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff', 'profit'],
+        'pointsDifference', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff', 'profit', 'profitBackOnDraw'],
       teamColumns: ['name', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff',
-        'totalProfit', 'totalProfitAsFav'],
+        'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw'],
       options: {
         headings: {
           opponent: 'Opponent',
@@ -42,7 +45,8 @@ export default {
           accumulativePointsDiff: 'Accumulative Points Diff',
           last3MatchesPointsDiff: 'Last 3 Points Diff',
           last5MatchesPointsDiff: 'Last 5 Points Diff',
-          profit: 'Profit'
+          profit: 'Profit',
+          profitBackOnDraw: 'Profit Back on Draw'
         },
         perPage: 100,
         perPageValues: [100, 200]
@@ -54,10 +58,11 @@ export default {
           last3MatchesPointsDiff: 'Last 3 Points Diff',
           last5MatchesPointsDiff: 'Last 5 Points Diff',
           totalProfit: 'Total profit',
-          totalProfitAsFav: 'Total profit as Fav'
+          totalProfitAsFav: 'Total profit as Fav',
+          totalProfitBackOnDraw: 'Total Profit Back On draw'
         },
         sortable: ['name', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff',
-          'totalProfit', 'totalProfitAsFav'],
+          'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw'],
         perPage: 100,
         perPageValues: [100, 200]
       }
@@ -72,11 +77,17 @@ export default {
     },
     calculateProfit(teamStats) {
       return teamStats.reduce((partialResult, currentValue) => partialResult + currentValue.profit, 0).toFixed(2);
-    }
+    },
+    calculateProfitBackOnDraw(teamStats) {
+      return teamStats.reduce((partialResult, currentValue) => partialResult + currentValue.profitBackOnDraw, 0).toFixed(2);
+    },
   },
   computed: {
     totalProfit() {
       return this.calculateProfit(this.teamStats)
+    },
+    totalProfitBackOnDraw() {
+      return this.calculateProfitBackOnDraw(this.teamStats)
     },
     totalProfitAsFav() {
       return this.calculateProfit(this.teamStats.filter( value => value.favouriteOrUnderDog == 'Fav'))

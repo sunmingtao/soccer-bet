@@ -5,11 +5,11 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
 import com.smt.soccerbetrestapi.converter.MatchDateCustomConverter;
-import com.smt.soccerbetrestapi.converter.TeamCustomConverter;
 import com.smt.soccerbetrestapi.model.MatchStats;
 import com.smt.soccerbetrestapi.model.Team;
 import com.smt.soccerbetrestapi.repo.TeamRepo;
 import com.smt.soccerbetrestapi.utils.SeasonUtils;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +19,7 @@ import java.util.Date;
 @Setter
 @DynamoDBTable(tableName = "soccer-bet")
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Match {
     private Date matchDate;
@@ -28,17 +29,7 @@ public class Match {
     private int awayScore;
     private double winProb;
     private double drawProb;
-
-    public Match(Date matchDate, String homeTeam, String awayTeam, int homeScore,
-                 int awayScore, double winProb, double drawProb) {
-        this.matchDate = matchDate;
-        this.homeTeam = homeTeam;
-        this.awayTeam = awayTeam;
-        this.homeScore = homeScore;
-        this.awayScore = awayScore;
-        this.winProb = winProb;
-        this.drawProb = drawProb;
-    }
+    private String league;
 
     public void setId(String id) {
         //Empty setter required by dynamodb
@@ -85,9 +76,14 @@ public class Match {
         return drawProb;
     }
 
+    @DynamoDBAttribute
+    public String getLeague() {
+        return league;
+    }
+
     public void addToTeamMatchStats(TeamRepo teamRepo) {
-        Team home = teamRepo.getOrCreate(homeTeam);
-        Team away = teamRepo.getOrCreate(awayTeam);
+        Team home = teamRepo.findOrCreate(homeTeam, league);
+        Team away = teamRepo.findOrCreate(awayTeam, league);
         home.addMatchStats(toMatchStats(true));
         away.addMatchStats(toMatchStats(false));
     }

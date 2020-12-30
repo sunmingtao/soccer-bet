@@ -14,6 +14,8 @@ import java.util.Optional;
 public class Team {
 
     private final String name;
+    private final String league;
+
     @JsonIgnore
     private DoublyLinkedList<MatchStats> matchStatsList = new DoublyLinkedList<>();
 
@@ -45,5 +47,9 @@ public class Team {
         return DoubleUtils.round(matchStatsList.stream()
                 .filter(matchStats -> StringUtils.equalsIgnoreCase(matchStats.getFavouriteOrUnderDog(), "Fav"))
                 .map(MatchStats::getProfit).reduce(0d, Double::sum), 2);
+    }
+
+    public double getTotalProfitBackOnDraw() {
+        return DoubleUtils.round(matchStatsList.stream().map(MatchStats::getProfitBackOnDraw).reduce(0d, Double::sum), 2);
     }
 }
