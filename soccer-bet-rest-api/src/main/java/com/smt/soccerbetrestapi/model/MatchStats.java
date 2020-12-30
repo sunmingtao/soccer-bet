@@ -76,6 +76,12 @@ public class MatchStats extends LinkedNode<MatchStats> {
         return DoubleUtils.round(profit, 2);
     }
 
+    public double getProfitBackOnDraw() {
+        double win = LIABILITY / (drawProb + 0.02) - LIABILITY;
+        double profit = actualPoints == 1 ? win * (1 - COMMISSION) : -LIABILITY;
+        return DoubleUtils.round(profit, 2);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

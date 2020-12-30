@@ -24,7 +24,7 @@ public class MatchStatsService {
     }
 
     public List<MatchStats> findMatchStats(String name) {
-        return populateTeamRepo().getOrCreate(name).getMatchStatsList();
+        return populateTeamRepo().findByName(name).getMatchStatsList();
     }
 
     private TeamRepo populateTeamRepo() {

@@ -34,10 +34,10 @@ public class SoccerDataService {
     private Stream<Match> loadMatches(League league) {
         Document doc = Jsoup.connect(SOCCER_DATA_HOME + league.getName()).get();
         Elements matchElements = doc.select(".games-container.completed").select(".match-container");
-        return matchElements.stream().map(this::toMatch);
+        return matchElements.stream().map(match -> toMatch(match, league));
     }
 
-    private Match toMatch(Element matchElement) {
+    private Match toMatch(Element matchElement, League league) {
         String homeTeamName = matchElement.attr("data-team1");
         String awayTeamName = matchElement.attr("data-team2");
         Element matchTopTr = matchElement.select("tr.match-top").first();
@@ -47,7 +47,8 @@ public class SoccerDataService {
         double tieProb = toProb(matchTopTr.select("td.prob.tie-prob").text());
         Element matchBottomTr = matchElement.select("tr.match-bottom").first();
         int awayScore = Integer.parseInt(matchBottomTr.select("span.score").text());
-        return new Match(SeasonUtils.toFullDate(date, seasonStart), homeTeamName, awayTeamName, homeScore, awayScore, homeProb, tieProb);
+        return new Match(SeasonUtils.toFullDate(date, seasonStart), homeTeamName, awayTeamName,
+                homeScore, awayScore, homeProb, tieProb, league.getName());
     }
 
     private static double toProb(String probStr) {

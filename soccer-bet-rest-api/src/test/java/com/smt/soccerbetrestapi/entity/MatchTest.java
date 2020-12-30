@@ -11,15 +11,15 @@ import org.junit.runner.RunWith;
 class MatchTest {
     @Test
     void equals() {
-        Match match1 = new Match(SeasonUtils.fromFullDateString("2020/1/2"), "liverpool", "man city", 1, 0, 0.25d, 0.25d);
-        Match match2 = new Match(SeasonUtils.fromFullDateString("2020/1/2"), "liverpool", "man city", 1, 1, 0.25d, 0.25d);
+        Match match1 = new Match(SeasonUtils.fromFullDateString("2020/1/2"), "liverpool", "man city", 1, 0, 0.25d, 0.25d, "epl");
+        Match match2 = new Match(SeasonUtils.fromFullDateString("2020/1/2"), "liverpool", "man city", 1, 1, 0.25d, 0.25d, "epl");
         Assertions.assertTrue(match1.equals(match2));
     }
 
     @Test
     void notEquals() {
-        Match match1 = new Match(SeasonUtils.fromFullDateString("2020/1/2"), "liverpool", "man city", 1, 0, 0.25d, 0.25d);
-        Match match2 = new Match(SeasonUtils.fromFullDateString("2020/1/3"), "liverpool", "man city", 1, 0, 0.25d, 0.25d);
+        Match match1 = new Match(SeasonUtils.fromFullDateString("2020/1/2"), "liverpool", "man city", 1, 0, 0.25d, 0.25d, "epl");
+        Match match2 = new Match(SeasonUtils.fromFullDateString("2020/1/3"), "liverpool", "man city", 1, 0, 0.25d, 0.25d, "epl");
         Assertions.assertFalse(match1.equals(match2));
     }
 }
