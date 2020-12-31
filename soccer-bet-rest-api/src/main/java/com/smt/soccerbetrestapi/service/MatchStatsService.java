@@ -5,6 +5,7 @@ import com.smt.soccerbetrestapi.model.MatchStats;
 import com.smt.soccerbetrestapi.model.Team;
 import com.smt.soccerbetrestapi.repo.TeamRepo;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -19,6 +20,13 @@ public class MatchStatsService {
 
     public List<Team> findTeams() {
         return populateTeamRepo().getTeams().stream()
+                .sorted(Comparator.comparing(Team::getName))
+                .collect(Collectors.toList());
+    }
+
+    public List<Team> findTeams(String league) {
+        return populateTeamRepo().getTeams().stream()
+                .filter(team -> StringUtils.equalsIgnoreCase(league, team.getLeague()))
                 .sorted(Comparator.comparing(Team::getName))
                 .collect(Collectors.toList());
     }
