@@ -11,6 +11,8 @@ Vue.use(ClientTable)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
+Vue.http.options.root = 'http://localhost:8080'
+
 new Vue({
   el: '#app',
   render: h => h(App)
