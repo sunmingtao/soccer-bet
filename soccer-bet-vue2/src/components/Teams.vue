@@ -59,6 +59,7 @@ export default {
           profitLayOnDrawFixedLiability: 'Profit Lay on Draw',
           drawRate: 'Draw Rate'
         },
+        filterable: false,
         perPage: 100,
         perPageValues: [100, 200]
       },
