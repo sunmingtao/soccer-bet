@@ -49,7 +49,18 @@ public class Team {
                 .map(MatchStats::getProfit).reduce(0d, Double::sum), 2);
     }
 
+    public double getTotalProfitAsStrictFav() {
+        return DoubleUtils.round(matchStatsList.stream()
+                .filter(matchStats -> matchStats.getWinProb() > 0.5d)
+                .map(MatchStats::getProfit).reduce(0d, Double::sum), 2);
+    }
+
     public double getTotalProfitBackOnDraw() {
         return DoubleUtils.round(matchStatsList.stream().map(MatchStats::getProfitBackOnDraw).reduce(0d, Double::sum), 2);
+    }
+
+    public double getDrawRate() {
+        double drawRate = getLastMatchStats().map(MatchStats::getDrawRate).orElse(0d);
+        return DoubleUtils.round(drawRate, 2);
     }
 }

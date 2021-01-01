@@ -12,10 +12,14 @@ public enum League {
     SERIE_A("serie-a"),
     LIGUE_1("ligue-1"),
     BUNDESLIGA("bundesliga"),
+    SCOTLAND("premiership"),
     CHINESE_SUPER_LEAGUE("chinese-super-league"),
     J_LEAGUE("j1-league"),
     EC("championship"),
-    PORTUGAL("primeira-liga");
+    PORTUGAL("primeira-liga"),
+    LALIGA2("la-liga-2"),
+    BUNDESLIGA2("bundesliga-2"),
+    SERIE_B("serie-b");
 
     private final String name;
 

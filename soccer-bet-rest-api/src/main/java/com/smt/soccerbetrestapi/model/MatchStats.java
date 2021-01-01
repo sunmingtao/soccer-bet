@@ -50,6 +50,13 @@ public class MatchStats extends LinkedNode<MatchStats> {
         return DoubleUtils.round(result, 2);
     }
 
+    public double getDrawRate() {
+        long drawCount = Stream.iterate(this, Objects::nonNull, MatchStats::getPrev)
+                .filter(matchStats -> matchStats.getActualPoints() == 1).count();
+        long matchCount = Stream.iterate(this, Objects::nonNull, MatchStats::getPrev).count();
+        return DoubleUtils.round((double) drawCount / matchCount, 2);
+    }
+
     public double getWinProb() {
         return DoubleUtils.round(winProb, 2);
     }
@@ -82,14 +89,14 @@ public class MatchStats extends LinkedNode<MatchStats> {
         return DoubleUtils.round(profit, 2);
     }
 
-    public double getProfitLayOnDraw() {
+    public double getProfitLayOnDrawFixedWin() {
         double loss = (1 / drawProb - 1) * LIABILITY;
         double win = LIABILITY;
         double profit = actualPoints != 1 ? win * (1 - COMMISSION) : -loss;
         return DoubleUtils.round(profit, 2);
     }
 
-    public double getProfitLayOnDraw2() {
+    public double getProfitLayOnDrawFixedLiability() {
         double win = LIABILITY / (1 - drawProb) - LIABILITY;
         double profit = actualPoints != 1 ? win * (1 - COMMISSION) : -LIABILITY;
         return DoubleUtils.round(profit, 2);

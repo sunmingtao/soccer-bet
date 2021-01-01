@@ -4,16 +4,21 @@
       <option v-for="team in teams" :key="team.name" :value="team.name">{{ team.name }}</option>
     </select>
     <v-client-table v-if="teamStats.length > 0" :data="teamStats" :columns="columns" :options="options"> </v-client-table>
-    <p>
-      Total Profit = {{ totalProfit }}
-    </p>
-    <p>
-      Total Profit as Fav = {{ totalProfitAsFav }}
-    </p>
-    <p>
-      Total Profit Back On Draw = {{ totalProfitBackOnDraw }}
-    </p>
+    <p>Total Profit = {{ totalProfit }}</p>
+    <p>Total Profit as Fav = {{ totalProfitAsFav }}</p>
+    <p>Total Profit as Strict Fav = {{ totalProfitAsStrictFav }}</p>
+    <p>Total Profit Back On Draw = {{ totalProfitBackOnDraw }}</p>
+    <p>Total Profit Lay On Draw Fixed Liability = {{ totalProfitLayOnDraw }}</p>
     <v-client-table :data="teams" :columns="teamColumns" :options="teamOptions"> </v-client-table>
+    <p>Total Profit For Lay = {{ leagueStats.totalProfitForLay }} </p>
+    <p>Total Profit For Lay As Fav = {{ leagueStats.totalProfitForLayAsFav }} </p>
+    <p>Total Profit For Lay As Strict Fav = {{ leagueStats.totalProfitForLayAsStrictFav }} </p>
+    <p>Total Profit For Back Draw = {{ leagueStats.totalProfitForBackDraw }} </p>
+    <p>Total Profit For Lay Draw Fixed Win = {{ leagueStats.totalProfitForLayDrawFixedWin }} </p>
+    <p>Total Profit For Lay Draw Fixed Liability = {{ leagueStats.totalProfitForLayDrawFixedLiability }} </p>
+    <p>Total Draw Count = {{ leagueStats.totalDrawCount }} </p>
+    <p>Total match count  = {{ leagueStats.totalMatchCount }} </p>
+    <p>Total Draw rate  = {{ leagueStats.totalDrawCount / leagueStats.totalMatchCount}} </p>
   </div>
 </template>
 
@@ -30,10 +35,12 @@ export default {
       leagues: [],
       teams: [],
       teamStats: [],
+      leagueStats: {},
       columns: ['opponent', 'homeOrAway', 'favouriteOrUnderDog', 'winProb', 'drawProb', 'expectedPoints', 'actualPoints',
-        'pointsDifference', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff', 'profit', 'profitBackOnDraw'],
+        'pointsDifference', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff',
+        'profit', 'profitBackOnDraw', 'profitLayOnDrawFixedLiability','drawRate'],
       teamColumns: ['name', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff',
-        'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw'],
+        'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw', 'drawRate'],
       options: {
         headings: {
           opponent: 'Opponent',
@@ -48,7 +55,9 @@ export default {
           last3MatchesPointsDiff: 'Last 3 Points Diff',
           last5MatchesPointsDiff: 'Last 5 Points Diff',
           profit: 'Profit',
-          profitBackOnDraw: 'Profit Back on Draw'
+          profitBackOnDraw: 'Profit Back on Draw',
+          profitLayOnDrawFixedLiability: 'Profit Lay on Draw',
+          drawRate: 'Draw Rate'
         },
         perPage: 100,
         perPageValues: [100, 200]
@@ -61,10 +70,11 @@ export default {
           last5MatchesPointsDiff: 'Last 5 Points Diff',
           totalProfit: 'Total profit',
           totalProfitAsFav: 'Total profit as Fav',
-          totalProfitBackOnDraw: 'Total Profit Back On draw'
+          totalProfitBackOnDraw: 'Total Profit Back On Draw',
+          drawRate: 'Draw Rate'
         },
         sortable: ['name', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff',
-          'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw'],
+          'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw', 'drawRate'],
         perPage: 100,
         perPageValues: [100, 200]
       }
@@ -83,6 +93,9 @@ export default {
     calculateProfitBackOnDraw(teamStats) {
       return teamStats.reduce((partialResult, currentValue) => partialResult + currentValue.profitBackOnDraw, 0).toFixed(2);
     },
+    calculateProfitLayOnDraw(teamStats) {
+      return teamStats.reduce((partialResult, currentValue) => partialResult + currentValue.profitLayOnDrawFixedLiability, 0).toFixed(2);
+    },
   },
   computed: {
     totalProfit() {
@@ -91,13 +104,20 @@ export default {
     totalProfitBackOnDraw() {
       return this.calculateProfitBackOnDraw(this.teamStats)
     },
+    totalProfitLayOnDraw() {
+      return this.calculateProfitLayOnDraw(this.teamStats)
+    },
     totalProfitAsFav() {
       return this.calculateProfit(this.teamStats.filter( value => value.favouriteOrUnderDog == 'Fav'))
+    },
+    totalProfitAsStrictFav() {
+      return this.calculateProfit(this.teamStats.filter( value => value.winProb > 0.5))
     }
   },
   beforeMount: function() {
     this.$http.get(`teams/${this.league}`).then(response => {
-      this.teams = response.data
+      this.teams = response.data.teams
+      this.leagueStats = response.data
     })
   }
 }
