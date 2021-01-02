@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <h1>{{ msg }}</h1>
-
     <div>
       <b-tabs content-class="mt-3">
         <b-tab v-for="league in leagues" :title="league" :key="league">
