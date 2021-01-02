@@ -17,8 +17,8 @@ public class SeasonUtils {
     private static final FastDateFormat FULL_DATE_FORMATTER = FastDateFormat.getInstance("yyyy/MM/dd");
 
     /**
-     * @param matchDate is in the format of "MM/dd"
-     * @param seasonStartDate is in the format of "yyyy/MM"
+     * @param matchDateStr is in the format of "MM/dd"
+     * @param seasonStartDateStr is in the format of "yyyy/MM"
      * @return
      */
     @SneakyThrows(ParseException.class)
@@ -38,6 +38,13 @@ public class SeasonUtils {
 
     public static String toFullDateString(Date date) {
         return FULL_DATE_FORMATTER.format(date);
+    }
+
+    @SneakyThrows(ParseException.class)
+    public static String getSeason(String seasonStartDateStr) {
+        Date seasonStartDate = SEASON_START_DATE_FORMATTER.parse(seasonStartDateStr);
+        int seasonStartYear = getYear(seasonStartDate);
+        return seasonStartYear + "/" + (seasonStartYear + 1);
     }
 
     private static int getMonth(Date date) {

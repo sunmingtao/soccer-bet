@@ -23,8 +23,11 @@ public class HomeController {
     private final MatchLoader matchLoader;
     private final MatchStatsService matchStatsService;
 
+    private final MatchRepo matchRepo;
+
     @PostConstruct
     public void init() {
+        matchRepo.deleteAll();
         matchLoader.load();
     }
 
