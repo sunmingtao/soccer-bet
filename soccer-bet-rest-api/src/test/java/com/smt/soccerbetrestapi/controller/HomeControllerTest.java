@@ -1,5 +1,6 @@
 package com.smt.soccerbetrestapi.controller;
 
+import com.smt.soccerbetrestapi.cron.MatchLoader;
 import com.smt.soccerbetrestapi.repo.MatchRepo;
 import com.smt.soccerbetrestapi.service.MatchStatsService;
 import com.smt.soccerbetrestapi.service.SoccerDataService;
@@ -26,6 +27,9 @@ class HomeControllerTest {
 
     @MockBean
     private MatchStatsService matchStatsService;
+
+    @MockBean
+    private MatchLoader matchLoader;
 
     @Test
     void shouldReturnDefaultMessage() throws Exception {
