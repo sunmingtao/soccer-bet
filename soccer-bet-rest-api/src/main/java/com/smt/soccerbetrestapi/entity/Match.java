@@ -30,6 +30,7 @@ public class Match {
     private double winProb;
     private double drawProb;
     private String league;
+    private String season;
 
     public void setId(String id) {
         //Empty setter required by dynamodb
@@ -79,6 +80,11 @@ public class Match {
     @DynamoDBAttribute
     public String getLeague() {
         return league;
+    }
+
+    @DynamoDBAttribute
+    public String getSeason() {
+        return season;
     }
 
     public void addToTeamMatchStats(TeamRepo teamRepo) {

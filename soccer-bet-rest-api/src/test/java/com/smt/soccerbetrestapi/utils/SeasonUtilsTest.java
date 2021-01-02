@@ -14,4 +14,9 @@ class SeasonUtilsTest {
         Assertions.assertEquals(SeasonUtils.fromFullDateString("2021/01/01"), SeasonUtils.toFullDate("1/1", "2020/08"));
         Assertions.assertEquals(SeasonUtils.fromFullDateString("2021/07/01"), SeasonUtils.toFullDate("7/1", "2020/08"));
     }
+
+    @Test
+    void getSeason() {
+        Assertions.assertEquals("2020/2021", SeasonUtils.getSeason("2020/08"));
+    }
 }

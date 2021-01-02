@@ -48,7 +48,7 @@ public class SoccerDataService {
         Element matchBottomTr = matchElement.select("tr.match-bottom").first();
         int awayScore = Integer.parseInt(matchBottomTr.select("span.score").text());
         return new Match(SeasonUtils.toFullDate(date, seasonStart), homeTeamName, awayTeamName,
-                homeScore, awayScore, homeProb, tieProb, league.getName());
+                homeScore, awayScore, homeProb, tieProb, league.getName(), SeasonUtils.getSeason(seasonStart));
     }
 
     private static double toProb(String probStr) {
