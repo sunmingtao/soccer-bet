@@ -8,7 +8,6 @@ import com.smt.soccerbetrestapi.converter.MatchDateCustomConverter;
 import com.smt.soccerbetrestapi.model.MatchStats;
 import com.smt.soccerbetrestapi.model.Team;
 import com.smt.soccerbetrestapi.repo.TeamRepo;
-import com.smt.soccerbetrestapi.utils.SeasonUtils;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -22,9 +21,12 @@ import java.util.Date;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Match {
+    private long id;
     private Date matchDate;
     private String homeTeam;
     private String awayTeam;
+    private String homeTeamCode;
+    private String awayTeamCode;
     private int homeScore;
     private int awayScore;
     private double winProb;
@@ -32,14 +34,10 @@ public class Match {
     private String league;
     private String season;
 
-    public void setId(String id) {
-        //Empty setter required by dynamodb
-    }
-
     @DynamoDBHashKey
     @EqualsAndHashCode.Include
-    public String getId() {
-        return SeasonUtils.toFullDateString(matchDate) + "-" + homeTeam + "-" + awayTeam;
+    public long getId() {
+        return id;
     }
 
     @DynamoDBTypeConverted(converter = MatchDateCustomConverter.class)
@@ -55,6 +53,16 @@ public class Match {
     @DynamoDBAttribute
     public String getAwayTeam() {
         return awayTeam;
+    }
+
+    @DynamoDBAttribute
+    public String getHomeTeamCode() {
+        return homeTeamCode;
+    }
+
+    @DynamoDBAttribute
+    public String getAwayTeamCode() {
+        return awayTeamCode;
     }
 
     @DynamoDBAttribute
@@ -111,6 +119,6 @@ public class Match {
 
     @Override
     public String toString() {
-        return getId();
+        return String.valueOf(getId());
     }
 }

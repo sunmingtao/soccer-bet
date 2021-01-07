@@ -47,7 +47,7 @@ public class SoccerDataService {
         double tieProb = toProb(matchTopTr.select("td.prob.tie-prob").text());
         Element matchBottomTr = matchElement.select("tr.match-bottom").first();
         int awayScore = Integer.parseInt(matchBottomTr.select("span.score").text());
-        return new Match(SeasonUtils.toFullDate(date, seasonStart), homeTeamName, awayTeamName,
+        return new Match(0L, SeasonUtils.toFullDate(date, seasonStart), homeTeamName, awayTeamName, null, null,
                 homeScore, awayScore, homeProb, tieProb, league.getName(), SeasonUtils.getSeason(seasonStart));
     }
 
