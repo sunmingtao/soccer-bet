@@ -1,6 +1,5 @@
 package com.smt.soccerbetrestapi.service;
 
-import com.smt.soccerbetrestapi.entity.Match;
 import com.smt.soccerbetrestapi.enums.League;
 import com.smt.soccerbetrestapi.model.RawMatch;
 import org.springframework.core.ParameterizedTypeReference;
