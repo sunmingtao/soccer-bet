@@ -20,7 +20,7 @@ public class SoccerDataServiceV2 {
         String url = String.format(SOCCER_DATA_URL_TEMPLATE, 2020, League.EPL.getName());
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<List<RawMatch>> actualExample = restTemplate.exchange(url, HttpMethod.GET,
-                null, new ParameterizedTypeReference<List<RawMatch>>() {});
+                null, new ParameterizedTypeReference<>() {});
         List<RawMatch> exampleList = actualExample.getBody();
         exampleList.forEach(System.out::println);
     }
