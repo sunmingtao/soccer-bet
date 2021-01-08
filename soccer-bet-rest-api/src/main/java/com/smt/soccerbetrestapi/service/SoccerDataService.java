@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -40,7 +41,9 @@ public class SoccerDataService {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<List<SoccerRawMatch>> matcheResponse = restTemplate.exchange(url, HttpMethod.GET,
                 null, new ParameterizedTypeReference<>() {});
-        return matcheResponse.getBody();
+        List<SoccerRawMatch> rawMatches = matcheResponse.getBody();
+        return Optional.ofNullable(rawMatches)
+                .orElseThrow(() -> new IllegalArgumentException("Cannot load soccer matches for season " + season + " in league " + league));
     }
 
 }
