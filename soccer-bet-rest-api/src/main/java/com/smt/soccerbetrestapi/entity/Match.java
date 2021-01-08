@@ -16,12 +16,12 @@ import lombok.Setter;
 import java.util.Date;
 
 @Setter
-@DynamoDBTable(tableName = "soccer-bet")
+@DynamoDBTable(tableName = "soccer-match")
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Match {
-    private long id;
+    private String id;
     private Date matchDate;
     private String homeTeam;
     private String awayTeam;
@@ -36,7 +36,7 @@ public class Match {
 
     @DynamoDBHashKey
     @EqualsAndHashCode.Include
-    public long getId() {
+    public String getId() {
         return id;
     }
 

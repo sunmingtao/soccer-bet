@@ -1,15 +1,14 @@
 package com.smt.soccerbetrestapi.cron;
 
 import com.smt.soccerbetrestapi.entity.Match;
-import com.smt.soccerbetrestapi.repo.MatchRepo;
 import com.smt.soccerbetrestapi.service.MatchService;
-import com.smt.soccerbetrestapi.service.SoccerDataService;
+import com.smt.soccerbetrestapi.service.SoccerDataServiceV2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,11 +18,14 @@ import java.util.stream.Collectors;
 public class MatchLoader {
 
     private final MatchService matchService;
-    private final SoccerDataService soccerDataService;
+    private final SoccerDataServiceV2 soccerDataServiceV2;
+
+    @Value("${soccer.season}")
+    private String soccerSeason;
 
     @Scheduled(cron = "${load.match.job.cron}")
     public void load() {
-        loadNewMatches(soccerDataService.loadAllLeagueMatches());
+        loadNewMatches(soccerDataServiceV2.loadAllLeagueMatches(soccerSeason));
     }
 
     private void loadNewMatches(List<Match> matches) {

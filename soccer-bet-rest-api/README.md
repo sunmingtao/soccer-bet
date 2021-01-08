@@ -1,6 +1,7 @@
 ```
 -Damazon.aws.accesskey=
 -Damazon.aws.secretkey=
+-Damazon.aws.region=
 -Dserver.port=7777
 ```
 
