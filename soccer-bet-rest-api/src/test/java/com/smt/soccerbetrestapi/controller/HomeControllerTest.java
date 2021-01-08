@@ -3,7 +3,7 @@ package com.smt.soccerbetrestapi.controller;
 import com.smt.soccerbetrestapi.cron.MatchLoader;
 import com.smt.soccerbetrestapi.repo.MatchRepo;
 import com.smt.soccerbetrestapi.service.MatchStatsService;
-import com.smt.soccerbetrestapi.service.SoccerDataServiceV2;
+import com.smt.soccerbetrestapi.service.SoccerDataService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ class HomeControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private SoccerDataServiceV2 soccerDataServiceV2;
+    private SoccerDataService soccerDataService;
 
     @MockBean
     private MatchRepo matchRepo;

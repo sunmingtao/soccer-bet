@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 @Service
 @Slf4j
-public class SoccerDataServiceV2 {
+public class SoccerDataService {
 
     private static final String SOCCER_DATA_URL_TEMPLATE = "https://projects.fivethirtyeight.com/soccer-predictions/forecasts/%s_%s_matches.json";
 
