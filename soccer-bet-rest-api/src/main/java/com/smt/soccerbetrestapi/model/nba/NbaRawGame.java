@@ -3,7 +3,6 @@ package com.smt.soccerbetrestapi.model.nba;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.smt.soccerbetrestapi.entity.Match;
 import com.smt.soccerbetrestapi.entity.NbaGame;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
