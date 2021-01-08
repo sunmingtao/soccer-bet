@@ -13,8 +13,6 @@ public enum League {
     LIGUE_1("ligue-1"),
     BUNDESLIGA("bundesliga"),
     SCOTLAND("premiership"),
-    CHINESE_SUPER_LEAGUE("chinese-super-league"),
-    J_LEAGUE("j1-league"),
     EC("championship"),
     PORTUGAL("primeira-liga"),
     LALIGA2("la-liga-2"),

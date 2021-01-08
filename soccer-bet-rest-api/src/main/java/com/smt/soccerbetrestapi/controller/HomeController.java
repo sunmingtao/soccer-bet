@@ -3,7 +3,6 @@ package com.smt.soccerbetrestapi.controller;
 import com.smt.soccerbetrestapi.cron.MatchLoader;
 import com.smt.soccerbetrestapi.enums.League;
 import com.smt.soccerbetrestapi.model.MatchStats;
-import com.smt.soccerbetrestapi.model.Team;
 import com.smt.soccerbetrestapi.model.TeamList;
 import com.smt.soccerbetrestapi.repo.MatchRepo;
 import com.smt.soccerbetrestapi.service.MatchStatsService;

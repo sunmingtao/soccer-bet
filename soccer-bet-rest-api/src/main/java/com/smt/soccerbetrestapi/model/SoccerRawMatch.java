@@ -38,11 +38,11 @@ public class SoccerRawMatch {
     private String season;
 
     public boolean isCompleted() {
-        return StringUtils.equalsIgnoreCase(status, "pre");
+        return StringUtils.equalsIgnoreCase(status, "post");
     }
 
     public Match toEntity() {
-        return new Match(id, dateTime, team1, team2, team1Code, team2Code, score1, score2,
+        return new Match(String.valueOf(id), dateTime, team1, team2, team1Code, team2Code, score1, score2,
                 team1WinProb, drawProb, leagueName, season);
     }
 }
