@@ -1,27 +1,40 @@
 package com.smt.soccerbetrestapi.service;
 
-import lombok.SneakyThrows;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
+import com.smt.soccerbetrestapi.entity.Match;
+import com.smt.soccerbetrestapi.entity.NbaGame;
+import com.smt.soccerbetrestapi.enums.League;
+import com.smt.soccerbetrestapi.model.SoccerRawMatch;
+import com.smt.soccerbetrestapi.model.nba.NbaRawData;
+import com.smt.soccerbetrestapi.model.nba.NbaRawGame;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
+import java.util.List;
+import java.util.stream.Stream;
 
 @Service
+@Slf4j
 public class NbaDataService {
-    private static final String NBA_DATA_HOME_TEMPLATE = "https://projects.fivethirtyeight.com/%s-nba-predictions/games/";
+    private static final String NBA_DATA_HOME_TEMPLATE = "https://projects.fivethirtyeight.com/%s-nba-predictions/data.json";
 
-    @Value("${nba.season}")
-    private String season;
-
-    @SneakyThrows(IOException.class)
-    public static void main(String[] args) {
-        String nbaDataUrl = String.format(NBA_DATA_HOME_TEMPLATE, "2021");
-        Document doc = Jsoup.connect(nbaDataUrl).get();
-        Elements dayElements = doc.select("div#completed-days").select("table[data-game]");
-        //System.out.println(dayElements.size());
-        dayElements.stream().forEach(element -> System.out.println(element.attr("data-game")));
+    public Stream<NbaGame> loadGames(String season) {
+        List<NbaRawGame> matches = loadRawGames(season).getGames();
+        matches.forEach(match -> {
+            match.setSeason(season);
+        });
+        return matches.stream().filter(NbaRawGame::isCompleted).map(NbaRawGame::toEntity);
     }
+
+    private NbaRawData loadRawGames(String season) {
+        String url = String.format(NBA_DATA_HOME_TEMPLATE, season);
+        log.info("Load NBA data for season {}, URL = {}", season, url);
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject(url, NbaRawData.class);
+    }
+
 }

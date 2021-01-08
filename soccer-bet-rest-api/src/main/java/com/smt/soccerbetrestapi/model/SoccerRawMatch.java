@@ -14,7 +14,7 @@ import java.util.Date;
 @Getter @Setter
 @ToString
 public class SoccerRawMatch {
-    private long id;
+    private String id;
     @JsonProperty("datetime")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date dateTime;
@@ -42,7 +42,7 @@ public class SoccerRawMatch {
     }
 
     public Match toEntity() {
-        return new Match(String.valueOf(id), dateTime, team1, team2, team1Code, team2Code, score1, score2,
+        return new Match(id, dateTime, team1, team2, team1Code, team2Code, score1, score2,
                 team1WinProb, drawProb, leagueName, season);
     }
 }
