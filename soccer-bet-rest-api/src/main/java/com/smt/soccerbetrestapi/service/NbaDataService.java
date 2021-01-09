@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -29,6 +30,20 @@ public class NbaDataService {
         NbaRawData nbaRawData = restTemplate.getForObject(url, NbaRawData.class);
         return Optional.ofNullable(nbaRawData)
                 .orElseThrow(() -> new IllegalArgumentException("Cannot lead nba data for season " + season));
+    }
+
+    public static void main(String[] args) {
+        NbaDataService nbaDataService = new NbaDataService();
+        List<NbaGame> games = nbaDataService.loadGames("2020").collect(Collectors.toList());
+        List<Double> thresholds = List.of(0d, 0.05, 0.1, 0.2, 0.25, 0.3, 0.4, 0.45);
+        thresholds.forEach(threshold -> print(games, threshold));
+
+    }
+
+    private static void print(List<NbaGame> games, double threshold) {
+        System.out.println(threshold + ": " + games.stream()
+                .filter(nbaGame -> !nbaGame.isDogUnder(threshold))
+                .map(NbaGame::getProfitFixedWinning).reduce(0d, Double::sum));
     }
 
 }

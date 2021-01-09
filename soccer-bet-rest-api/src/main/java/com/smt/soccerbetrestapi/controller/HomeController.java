@@ -7,6 +7,7 @@ import com.smt.soccerbetrestapi.model.TeamList;
 import com.smt.soccerbetrestapi.repo.MatchRepo;
 import com.smt.soccerbetrestapi.service.MatchStatsService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class HomeController {
 
     private final MatchLoader matchLoader;
@@ -39,6 +41,7 @@ public class HomeController {
 
     @GetMapping("/teams/{league}")
     public TeamList teamsByLeague(@PathVariable String league) {
+        log.info("load teams by league {}", league);
         return new TeamList(matchStatsService.findTeams(league));
     }
 
