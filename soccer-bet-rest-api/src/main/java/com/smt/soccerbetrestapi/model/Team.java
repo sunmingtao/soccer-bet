@@ -40,23 +40,23 @@ public class Team {
     }
 
     public double getTotalProfit() {
-        return DoubleUtils.round(matchStatsList.stream().map(MatchStats::getProfit).reduce(0d, Double::sum), 2);
+        return DoubleUtils.round(matchStatsList.stream().map(MatchStats::getProfitFixedWin).reduce(0d, Double::sum), 2);
     }
 
     public double getTotalProfitAsFav() {
         return DoubleUtils.round(matchStatsList.stream()
                 .filter(matchStats -> StringUtils.equalsIgnoreCase(matchStats.getFavouriteOrUnderDog(), "Fav"))
-                .map(MatchStats::getProfit).reduce(0d, Double::sum), 2);
+                .map(MatchStats::getProfitFixedWin).reduce(0d, Double::sum), 2);
     }
 
     public double getTotalProfitAsStrictFav() {
         return DoubleUtils.round(matchStatsList.stream()
                 .filter(matchStats -> matchStats.getWinProb() > 0.5d)
-                .map(MatchStats::getProfit).reduce(0d, Double::sum), 2);
+                .map(MatchStats::getProfitFixedWin).reduce(0d, Double::sum), 2);
     }
 
     public double getTotalProfitBackOnDraw() {
-        return DoubleUtils.round(matchStatsList.stream().map(MatchStats::getProfitBackOnDraw).reduce(0d, Double::sum), 2);
+        return DoubleUtils.round(matchStatsList.stream().map(MatchStats::getProfitBackOnDrawFixedWin).reduce(0d, Double::sum), 2);
     }
 
     public double getDrawRate() {

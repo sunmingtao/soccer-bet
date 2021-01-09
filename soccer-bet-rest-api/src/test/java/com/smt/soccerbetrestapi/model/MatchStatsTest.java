@@ -71,12 +71,12 @@ class MatchStatsTest {
     @Test
     void getProfit() {
         MatchStats matchStats = new MatchStats("", true, 1, 0.5, 0.25);
-        Assertions.assertEquals(95d, matchStats.getProfit());
+        Assertions.assertEquals(95d, matchStats.getProfitFixedLiability());
         matchStats = new MatchStats("", true, 2, 0.5, 0.25);
-        Assertions.assertEquals(-100d, matchStats.getProfit());
+        Assertions.assertEquals(-100d, matchStats.getProfitFixedLiability());
         matchStats = new MatchStats("", true, 0, 0.25, 0.25);
-        Assertions.assertEquals(31.67d, matchStats.getProfit());
+        Assertions.assertEquals(31.67d, matchStats.getProfitFixedLiability());
         matchStats = new MatchStats("", true, 0, 0.75, 0.15);
-        Assertions.assertEquals(285d, matchStats.getProfit());
+        Assertions.assertEquals(285d, matchStats.getProfitFixedLiability());
     }
 }
