@@ -8,8 +8,7 @@ import lombok.*;
 
 import java.util.Date;
 
-@Setter
-@Getter
+@Data
 @DynamoDBTable(tableName = "nba-game")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,5 +33,23 @@ public class NbaGame {
     @DynamoDBTypeConverted(converter = MatchDateCustomConverter.class)
     public Date getDate() {
         return date;
+    }
+
+    public double getProfitFixedWinning() {
+        boolean team1Dog = prob1 < prob2;
+        boolean team1Win = score1 > score2;
+        double favProb = Math.max(prob1, prob2);
+        double win = 95d;
+        double loss = (1 / favProb - 1) * 100d;
+        boolean dogWin = (team1Dog && team1Win) || (!team1Dog && !team1Win);
+        return dogWin ? win : -loss;
+    }
+
+    public void prettyPrint() {
+        System.out.println(this.toString() + " Profit: " + getProfitFixedWinning());
+    }
+
+    public boolean isDogUnder(double prob) {
+        return Math.min(prob1, prob2) < prob;
     }
 }
