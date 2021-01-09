@@ -38,7 +38,7 @@ export default {
       leagueStats: {},
       columns: ['opponent', 'homeOrAway', 'favouriteOrUnderDog', 'winProb', 'drawProb', 'expectedPoints', 'actualPoints',
         'pointsDifference', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff',
-        'profit', 'profitBackOnDraw', 'profitLayOnDrawFixedLiability','drawRate'],
+        'profitFixedWin', 'profitBackOnDrawFixedWin', 'profitLayOnDrawFixedLiability','drawRate'],
       teamColumns: ['name', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff',
         'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw', 'drawRate'],
       options: {
@@ -54,8 +54,8 @@ export default {
           accumulativePointsDiff: 'Accumulative Points Diff',
           last3MatchesPointsDiff: 'Last 3 Points Diff',
           last5MatchesPointsDiff: 'Last 5 Points Diff',
-          profit: 'Profit',
-          profitBackOnDraw: 'Profit Back on Draw',
+          profitFixedWin: 'Profit',
+          profitBackOnDrawFixedWin: 'Profit Back on Draw',
           profitLayOnDrawFixedLiability: 'Profit Lay on Draw',
           drawRate: 'Draw Rate'
         },
@@ -89,10 +89,10 @@ export default {
       })
     },
     calculateProfit(teamStats) {
-      return teamStats.reduce((partialResult, currentValue) => partialResult + currentValue.profit, 0).toFixed(2);
+      return teamStats.reduce((partialResult, currentValue) => partialResult + currentValue.profitFixedWin, 0).toFixed(2);
     },
     calculateProfitBackOnDraw(teamStats) {
-      return teamStats.reduce((partialResult, currentValue) => partialResult + currentValue.profitBackOnDraw, 0).toFixed(2);
+      return teamStats.reduce((partialResult, currentValue) => partialResult + currentValue.profitBackOnDrawFixedWin, 0).toFixed(2);
     },
     calculateProfitLayOnDraw(teamStats) {
       return teamStats.reduce((partialResult, currentValue) => partialResult + currentValue.profitLayOnDrawFixedLiability, 0).toFixed(2);

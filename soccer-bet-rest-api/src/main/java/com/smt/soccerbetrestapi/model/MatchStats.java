@@ -77,15 +77,29 @@ public class MatchStats extends LinkedNode<MatchStats> {
         return 2 * winProb > 1  - drawProb;
     }
 
-    public double getProfit() {
+    public double getProfitFixedLiability() {
         double win = LIABILITY / (1 - winProb) - LIABILITY;
         double profit = actualPoints == 2 ? -LIABILITY : win * (1 - COMMISSION);
         return DoubleUtils.round(profit, 2);
     }
 
-    public double getProfitBackOnDraw() {
+    public double getProfitFixedWin() {
+        double win = LIABILITY;
+        double loss = (1 / winProb - 1) * LIABILITY;
+        double profit = actualPoints == 2 ? -loss : win * (1 - COMMISSION);
+        return DoubleUtils.round(profit, 2);
+    }
+
+    public double getProfitBackOnDrawFixedLiability() {
         double win = LIABILITY / (drawProb + 0.01) - LIABILITY;
         double profit = actualPoints == 1 ? win * (1 - COMMISSION) : -LIABILITY;
+        return DoubleUtils.round(profit, 2);
+    }
+
+    public double getProfitBackOnDrawFixedWin() {
+        double win = LIABILITY;
+        double loss = (1 / (1 - drawProb) - 1) * LIABILITY;
+        double profit = actualPoints == 1 ? win * (1 - COMMISSION) : -loss;
         return DoubleUtils.round(profit, 2);
     }
 
