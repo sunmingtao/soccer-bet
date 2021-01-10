@@ -34,16 +34,19 @@ public class NbaDataService {
 
     public static void main(String[] args) {
         NbaDataService nbaDataService = new NbaDataService();
-        List<NbaGame> games = nbaDataService.loadGames("2020").collect(Collectors.toList());
+        List<NbaGame> games = nbaDataService.loadGames("2021").collect(Collectors.toList());
         List<Double> thresholds = List.of(0d, 0.05, 0.1, 0.2, 0.25, 0.3, 0.4, 0.45);
-        thresholds.forEach(threshold -> print(games, threshold));
-
+        System.out.println("============Raptor====================");
+        thresholds.forEach(threshold -> print(games, threshold, true));
+        System.out.println("============Elo====================");
+        thresholds.forEach(threshold -> print(games, threshold, false));
     }
 
-    private static void print(List<NbaGame> games, double threshold) {
+    private static void print(List<NbaGame> games, double threshold, boolean raptor) {
         System.out.println(threshold + ": " + games.stream()
-                .filter(nbaGame -> !nbaGame.isDogUnder(threshold))
-                .map(NbaGame::getProfitFixedWinning).reduce(0d, Double::sum));
+                .filter(nbaGame -> !nbaGame.isDogUnder(threshold, raptor))
+                //.filter(NbaGame::isRaptorEloConsistent)
+                .map(nbaGame -> nbaGame.getProfitFixedWin(raptor)).reduce(0d, Double::sum));
     }
 
 }

@@ -14,6 +14,8 @@ public enum League {
     BUNDESLIGA("bundesliga"),
     SCOTLAND("premiership"),
     EC("championship"),
+    EL1("league-one"),
+    EL2("league-two"),
     PORTUGAL("primeira-liga"),
     LALIGA2("la-liga-2"),
     BUNDESLIGA2("bundesliga-2"),
