@@ -20,8 +20,10 @@ public class NbaGame {
     private String team2;
     private int score1;
     private int score2;
-    private double prob1;
-    private double prob2;
+    private double raptorProb1;
+    private double raptorProb2;
+    private double eloProb1;
+    private double eloProb2;
     private String season;
 
     @DynamoDBHashKey
@@ -35,7 +37,9 @@ public class NbaGame {
         return date;
     }
 
-    public double getProfitFixedWinning() {
+    public double getProfitFixedWin(boolean raptor) {
+        double prob1 = raptor ? raptorProb1 : eloProb1;
+        double prob2 = raptor ? raptorProb2 : eloProb2;
         boolean team1Dog = prob1 < prob2;
         boolean team1Win = score1 > score2;
         double favProb = Math.max(prob1, prob2);
@@ -45,11 +49,19 @@ public class NbaGame {
         return dogWin ? win : -loss;
     }
 
-    public void prettyPrint() {
-        System.out.println(this.toString() + " Profit: " + getProfitFixedWinning());
+    public void prettyPrint(boolean raptor) {
+        System.out.println(this.toString() + " Profit: " + getProfitFixedWin(raptor));
     }
 
-    public boolean isDogUnder(double prob) {
+    public boolean isDogUnder(double prob, boolean raptor) {
+        double prob1 = raptor ? raptorProb1 : eloProb1;
+        double prob2 = raptor ? raptorProb2 : eloProb2;
         return Math.min(prob1, prob2) < prob;
+    }
+
+    public boolean isRaptorEloConsistent() {
+        boolean team1DogRaptor = raptorProb1 < raptorProb2;
+        boolean team1DogElo = eloProb1 < eloProb2;
+        return team1DogRaptor == team1DogElo;
     }
 }

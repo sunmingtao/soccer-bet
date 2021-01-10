@@ -20,9 +20,13 @@ public class NbaRawGame {
     private int score1;
     private int score2;
     @JsonProperty("rating_prob1")
-    private double prob1;
+    private double raptorProb1;
     @JsonProperty("rating_prob2")
-    private double prob2;
+    private double raptorProb2;
+    @JsonProperty("elo_prob1")
+    private double eloProb1;
+    @JsonProperty("elo_prob2")
+    private double eloProb2;
 
     @JsonIgnore
     private String season;
@@ -32,6 +36,6 @@ public class NbaRawGame {
     }
 
     public NbaGame toEntity() {
-        return new NbaGame(id, date, team1, team2, score1, score2, prob1, prob2, season);
+        return new NbaGame(id, date, team1, team2, score1, score2, raptorProb1, raptorProb2, eloProb1, eloProb2, season);
     }
 }
