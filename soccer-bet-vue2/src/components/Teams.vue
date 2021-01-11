@@ -26,7 +26,8 @@
 export default {
 
   props: {
-    league: String
+    league: String,
+    season: String
   },
   data () {
     return {
@@ -84,7 +85,7 @@ export default {
   methods: {
     selectTeam(event) {
       const teamName = event.target.value
-      this.$http.get(`team?name=${teamName}`).then(response => {
+      this.$http.get(`team/${this.season}?name=${teamName}`).then(response => {
         this.teamStats = response.data
       })
     },
@@ -116,7 +117,8 @@ export default {
     }
   },
   beforeMount: function() {
-    this.$http.get(`teams/${this.league}`).then(response => {
+    console.log(`Reload ${this.season} ${this.league}`);
+    this.$http.get(`teams/${this.season}/${this.league}`).then(response => {
       this.teams = response.data.teams
       this.leagueStats = response.data
     })
