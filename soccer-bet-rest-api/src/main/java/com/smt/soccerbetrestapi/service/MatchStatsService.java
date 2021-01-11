@@ -18,26 +18,20 @@ public class MatchStatsService {
 
     private final MatchService matchService;
 
-    public List<Team> findTeams() {
-        return populateTeamRepo().getTeams().stream()
-                .sorted(Comparator.comparing(Team::getName))
-                .collect(Collectors.toList());
-    }
-
-    public List<Team> findTeams(String league) {
-        return populateTeamRepo().getTeams().stream()
+    public List<Team> findTeams(String league, String season) {
+        return populateTeamRepo(season).getTeams().stream()
                 .filter(team -> StringUtils.equalsIgnoreCase(league, team.getLeague()))
                 .sorted(Comparator.comparing(Team::getName))
                 .collect(Collectors.toList());
     }
 
-    public List<MatchStats> findMatchStats(String name) {
-        return populateTeamRepo().findByName(name).getMatchStatsList();
+    public List<MatchStats> findMatchStats(String name, String season) {
+        return populateTeamRepo(season).findByName(name).getMatchStatsList();
     }
 
-    private TeamRepo populateTeamRepo() {
+    private TeamRepo populateTeamRepo(String season) {
         TeamRepo teamRepo = new TeamRepo();
-        matchService.findAllMatches().stream().sorted(Comparator.comparing(Match::getMatchDate))
+        matchService.findMatches(season).stream().sorted(Comparator.comparing(Match::getMatchDate))
                 .forEach(match -> match.addToTeamMatchStats(teamRepo));
         return teamRepo;
     }

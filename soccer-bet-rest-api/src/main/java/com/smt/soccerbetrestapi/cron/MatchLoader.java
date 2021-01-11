@@ -25,11 +25,11 @@ public class MatchLoader {
 
     @Scheduled(cron = "${load.match.job.cron}")
     public void load() {
-        loadNewMatches(soccerDataService.loadAllLeagueMatches(soccerSeason));
+        loadNewMatches(soccerDataService.loadAllLeagueMatches(soccerSeason), soccerSeason);
     }
 
-    private void loadNewMatches(List<Match> matches) {
-        List<Match> existingMatches = matchService.findAllMatchesNoCache().collect(Collectors.toList());
+    private void loadNewMatches(List<Match> matches, String season) {
+        List<Match> existingMatches = matchService.findMatchesNoCache(season).collect(Collectors.toList());
         List<Match> newMatches = matches.stream().filter(match -> !existingMatches.contains(match)).collect(Collectors.toList());
         if (!newMatches.isEmpty()) {
             log.info("Found new matches: {}", newMatches);

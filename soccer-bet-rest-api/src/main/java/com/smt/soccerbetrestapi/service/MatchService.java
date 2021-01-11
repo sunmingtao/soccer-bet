@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -18,13 +17,13 @@ import java.util.stream.StreamSupport;
 public class MatchService {
     private final MatchRepo matchRepo;
 
-    @Cacheable(value = "matchesCache", key = "{#root.methodName}")
-    public List<Match> findAllMatches() {
-        return findAllMatchesNoCache().collect(Collectors.toList());
+    @Cacheable(value = "matchesCache", key = "#season")
+    public List<Match> findMatches(String season) {
+        return findMatchesNoCache(season).collect(Collectors.toList());
     }
 
-    public Stream<Match> findAllMatchesNoCache() {
-        return StreamSupport.stream(matchRepo.findAll().spliterator(), false);
+    public Stream<Match> findMatchesNoCache(String season) {
+        return matchRepo.findBySeason(season).stream();
     }
 
     public void saveAllMatches(Iterable<Match> matches) {
