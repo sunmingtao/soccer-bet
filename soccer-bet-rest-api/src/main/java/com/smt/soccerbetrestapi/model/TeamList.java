@@ -32,12 +32,14 @@ public class TeamList {
     }
 
     public double getTotalProfitForLayDrawFixedWin() {
-        double result = teams.stream().flatMap(team -> team.getMatchStatsList().stream()).map(MatchStats::getProfitLayOnDrawFixedWin).reduce(0d, Double::sum);
+        double result = teams.stream().flatMap(team -> team.getMatchStatsList().stream())
+                .map(MatchStats::getProfitLayOnDrawFixedWin).reduce(0d, Double::sum) / 2;
         return DoubleUtils.round(result, 2);
     }
 
     public double getTotalProfitForLayDrawFixedLiability() {
-        double result = teams.stream().flatMap(team -> team.getMatchStatsList().stream()).map(MatchStats::getProfitLayOnDrawFixedLiability).reduce(0d, Double::sum);
+        double result = teams.stream().flatMap(team -> team.getMatchStatsList().stream())
+                .map(MatchStats::getProfitLayOnDrawFixedLiability).reduce(0d, Double::sum) / 2;
         return DoubleUtils.round(result, 2);
     }
 
