@@ -38,10 +38,10 @@ export default {
       teamStats: [],
       leagueStats: {},
       columns: ['opponent', 'homeOrAway', 'favouriteOrUnderDog', 'winProb', 'drawProb', 'expectedPoints', 'actualPoints',
-        'pointsDifference', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff',
-        'profitFixedWin', 'profitBackOnDrawFixedWin', 'profitLayOnDrawFixedLiability','drawRate'],
-      teamColumns: ['name', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff',
-        'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw', 'drawRate'],
+        'pointsDifference', 'accumulativePointsDiff',
+        'profitFixedWin', 'profitBackOnDrawFixedWin', 'profitLayOnDrawFixedLiability','drawRate', 'drawRateForLast10Matches'],
+      teamColumns: ['name', 'accumulativePointsDiff',
+        'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw', 'drawRate', 'drawRateForLast10Matches'],
       options: {
         headings: {
           opponent: 'Opponent',
@@ -53,12 +53,11 @@ export default {
           actualPoints: 'Actual Points',
           pointsDifference: 'Points Diff',
           accumulativePointsDiff: 'Accumulative Points Diff',
-          last3MatchesPointsDiff: 'Last 3 Points Diff',
-          last5MatchesPointsDiff: 'Last 5 Points Diff',
           profitFixedWin: 'Profit',
           profitBackOnDrawFixedWin: 'Profit Back on Draw',
           profitLayOnDrawFixedLiability: 'Profit Lay on Draw',
-          drawRate: 'Draw Rate'
+          drawRate: 'Draw Rate',
+          drawRateForLast10Matches: 'Last 10 Draw Rate'
         },
         filterable: false,
         perPage: 100,
@@ -68,15 +67,14 @@ export default {
         headings: {
           name: 'Team',
           accumulativePointsDiff: 'Accumulative Points Diff',
-          last3MatchesPointsDiff: 'Last 3 Points Diff',
-          last5MatchesPointsDiff: 'Last 5 Points Diff',
           totalProfit: 'Total profit',
           totalProfitAsFav: 'Total profit as Fav',
           totalProfitBackOnDraw: 'Total Profit Back On Draw',
-          drawRate: 'Draw Rate'
+          drawRate: 'Draw Rate',
+          drawRateForLast10Matches: 'Last 10 Draw Rate'
         },
         sortable: ['name', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff',
-          'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw', 'drawRate'],
+          'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw', 'drawRate', 'drawRateForLast10Matches'],
         perPage: 100,
         perPageValues: [100, 200]
       }

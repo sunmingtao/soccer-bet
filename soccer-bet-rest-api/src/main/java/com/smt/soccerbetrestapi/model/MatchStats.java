@@ -51,10 +51,18 @@ public class MatchStats extends LinkedNode<MatchStats> {
     }
 
     public double getDrawRate() {
-        long drawCount = Stream.iterate(this, Objects::nonNull, MatchStats::getPrev)
+        return getDrawRateForLastNMatches(100);
+    }
+
+    public double getDrawRateForLast10Matches() {
+        return getDrawRateForLastNMatches(10);
+    }
+
+    private double getDrawRateForLastNMatches(int n) {
+        long matchCount = Stream.iterate(this, Objects::nonNull, MatchStats::getPrev).limit(n).count();
+        long drawCount = Stream.iterate(this, Objects::nonNull, MatchStats::getPrev).limit(n)
                 .filter(matchStats -> matchStats.getActualPoints() == 1).count();
-        long matchCount = Stream.iterate(this, Objects::nonNull, MatchStats::getPrev).count();
-        return DoubleUtils.round((double) drawCount / matchCount, 2);
+        return DoubleUtils.round(drawCount / (double) matchCount, 2);
     }
 
     public double getWinProb() {
