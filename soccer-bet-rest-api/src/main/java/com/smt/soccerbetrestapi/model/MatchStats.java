@@ -91,7 +91,7 @@ public class MatchStats extends LinkedNode<MatchStats> {
     }
 
     public double getProfitBackOnDrawFixedLiability() {
-        double win = LIABILITY / (drawProb + 0.01) - LIABILITY;
+        double win = LIABILITY / drawProb - LIABILITY;
         double profit = actualPoints == 1 ? win * (1 - COMMISSION) : -LIABILITY;
         return DoubleUtils.round(profit, 2);
     }

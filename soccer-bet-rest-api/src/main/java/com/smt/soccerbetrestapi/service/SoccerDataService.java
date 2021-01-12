@@ -36,14 +36,19 @@ public class SoccerDataService {
     }
 
     private List<SoccerRawMatch> loadRawMatches(String season, League league) {
-        String url = String.format(SOCCER_DATA_URL_TEMPLATE, season, league.getName());
-        log.info("Load soccer data in {} {}, URL = {}", league.getName(), season, url);
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<List<SoccerRawMatch>> matcheResponse = restTemplate.exchange(url, HttpMethod.GET,
-                null, new ParameterizedTypeReference<>() {});
-        List<SoccerRawMatch> rawMatches = matcheResponse.getBody();
-        return Optional.ofNullable(rawMatches)
-                .orElseThrow(() -> new IllegalArgumentException("Cannot load soccer matches for season " + season + " in league " + league));
+        try {
+            String url = String.format(SOCCER_DATA_URL_TEMPLATE, season, league.getName());
+            log.info("Load soccer data in {} {}, URL = {}", league.getName(), season, url);
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<List<SoccerRawMatch>> matcheResponse = restTemplate.exchange(url, HttpMethod.GET,
+                    null, new ParameterizedTypeReference<>() {});
+            List<SoccerRawMatch> rawMatches = matcheResponse.getBody();
+            return Optional.ofNullable(rawMatches)
+                    .orElseThrow(() -> new IllegalArgumentException("Cannot load soccer matches for season " + season + " in league " + league));
+        } catch (Exception e) {
+            log.error("Cannot load soccer matches for {} {}", season, league);
+            return List.of();
+        }
     }
 
 }
