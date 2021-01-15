@@ -19,6 +19,8 @@ public class MatchStats extends LinkedNode<MatchStats> {
 
     private final String opponent;
     private final boolean home;
+    private final int score1;
+    private final int score2;
     private final int actualPoints;
     private final double winProb;
     private final double drawProb;
@@ -63,6 +65,13 @@ public class MatchStats extends LinkedNode<MatchStats> {
         long drawCount = Stream.iterate(this, Objects::nonNull, MatchStats::getPrev).limit(n)
                 .filter(matchStats -> matchStats.getActualPoints() == 1).count();
         return DoubleUtils.round(drawCount / (double) matchCount, 2);
+    }
+
+    public double getAverageGoal() {
+        long matchCount = Stream.iterate(this, Objects::nonNull, MatchStats::getPrev).count();
+        int goalCount = Stream.iterate(this, Objects::nonNull, MatchStats::getPrev).map(MatchStats::getScore1).reduce(0, Integer::sum);
+        double averageGoal = (double) goalCount / matchCount;
+        return DoubleUtils.round(averageGoal, 2);
     }
 
     public double getWinProb() {

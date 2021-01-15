@@ -105,7 +105,9 @@ public class Match {
     private MatchStats toMatchStats(boolean home) {
         String opponent = home ? awayTeam : homeTeam;
         double localWinProb = home ? this.winProb : 1 - this.winProb - drawProb;
-        return new MatchStats(opponent, home, getActualPoints(home), localWinProb, drawProb);
+        int score1 = home ? homeScore : awayScore;
+        int score2 = home ? awayScore : homeScore;
+        return new MatchStats(opponent, home, score1, score2, getActualPoints(home), localWinProb, drawProb);
     }
 
     private int getActualPoints(boolean home) {

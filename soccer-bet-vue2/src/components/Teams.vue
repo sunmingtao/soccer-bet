@@ -39,7 +39,8 @@ export default {
       leagueStats: {},
       columns: ['opponent', 'homeOrAway', 'favouriteOrUnderDog', 'winProb', 'drawProb', 'expectedPoints', 'actualPoints',
         'pointsDifference', 'accumulativePointsDiff',
-        'profitFixedWin', 'profitBackOnDrawFixedWin', 'profitLayOnDrawFixedLiability','drawRate', 'drawRateForLast10Matches'],
+        'profitFixedWin', 'profitBackOnDrawFixedWin', 'profitLayOnDrawFixedLiability','drawRate',
+        'drawRateForLast10Matches', 'averageGoal'],
       teamColumns: ['name', 'accumulativePointsDiff',
         'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw', 'drawRate', 'drawRateForLast10Matches'],
       options: {
@@ -57,7 +58,8 @@ export default {
           profitBackOnDrawFixedWin: 'Profit Back on Draw',
           profitLayOnDrawFixedLiability: 'Profit Lay on Draw',
           drawRate: 'Draw Rate',
-          drawRateForLast10Matches: 'Last 10 Draw Rate'
+          drawRateForLast10Matches: 'Last 10 Draw Rate',
+          averageGoal: 'Average goal'
         },
         filterable: false,
         perPage: 100,

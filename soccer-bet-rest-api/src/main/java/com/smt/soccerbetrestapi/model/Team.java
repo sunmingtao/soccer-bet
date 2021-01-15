@@ -68,4 +68,5 @@ public class Team {
         double drawRate = getLastMatchStats().map(MatchStats::getDrawRateForLast10Matches).orElse(0d);
         return DoubleUtils.round(drawRate, 2);
     }
+
 }

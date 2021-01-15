@@ -19,12 +19,12 @@ class MatchStatsTest {
 
     @BeforeEach
     void setup() {
-        matchStats1 = new MatchStats(null, true, 1, 0.5, 0.25);
-        matchStats2 = new MatchStats(null, true, 2, 0.6, 0.2);
-        matchStats3 = new MatchStats(null, true, 2, 0.7, 0.2);
-        matchStats4 = new MatchStats(null, true, 2, 0.8, 0.2);
-        matchStats5 = new MatchStats(null, true, 2, 0.4, 0.2);
-        matchStats6 = new MatchStats(null, true, 2, 0.3, 0.2);
+        matchStats1 = new MatchStats(null, true, 0, 0,1, 0.5, 0.25);
+        matchStats2 = new MatchStats(null, true, 0, 0, 2, 0.6, 0.2);
+        matchStats3 = new MatchStats(null, true, 0, 0,2, 0.7, 0.2);
+        matchStats4 = new MatchStats(null, true, 0, 0,2, 0.8, 0.2);
+        matchStats5 = new MatchStats(null, true, 0, 0, 2, 0.4, 0.2);
+        matchStats6 = new MatchStats(null, true, 0, 0, 2, 0.3, 0.2);
 
         matchStats2.setPrev(matchStats1);
         matchStats3.setPrev(matchStats2);
@@ -70,13 +70,13 @@ class MatchStatsTest {
 
     @Test
     void getProfit() {
-        MatchStats matchStats = new MatchStats("", true, 1, 0.5, 0.25);
+        MatchStats matchStats = new MatchStats("", true, 0,0,1, 0.5, 0.25);
         Assertions.assertEquals(95d, matchStats.getProfitFixedLiability());
-        matchStats = new MatchStats("", true, 2, 0.5, 0.25);
+        matchStats = new MatchStats("", true,0,0, 2, 0.5, 0.25);
         Assertions.assertEquals(-100d, matchStats.getProfitFixedLiability());
-        matchStats = new MatchStats("", true, 0, 0.25, 0.25);
+        matchStats = new MatchStats("", true,0,0, 0, 0.25, 0.25);
         Assertions.assertEquals(31.67d, matchStats.getProfitFixedLiability());
-        matchStats = new MatchStats("", true, 0, 0.75, 0.15);
+        matchStats = new MatchStats("", true,0,0, 0, 0.75, 0.15);
         Assertions.assertEquals(285d, matchStats.getProfitFixedLiability());
     }
 }
