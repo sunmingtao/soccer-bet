@@ -17,6 +17,9 @@ public enum League {
     EL1("league-one"),
     EL2("league-two"),
     PORTUGAL("primeira-liga"),
+    NETHERLANDS("eredivisie"),
+    BELGIUM("first-division-a"),
+    MEXICO("liga-mx"),
     LALIGA2("la-liga-2"),
     BUNDESLIGA2("bundesliga-2"),
     SERIE_B("serie-b");
