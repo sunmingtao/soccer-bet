@@ -18,7 +18,9 @@
     <p>Total Profit For Lay Draw Fixed Liability = {{ leagueStats.totalProfitForLayDrawFixedLiability }} </p>
     <p>Total Draw Count = {{ leagueStats.totalDrawCount }} </p>
     <p>Total match count  = {{ leagueStats.totalMatchCount }} </p>
-    <p>Total Draw rate  = {{ leagueStats.totalDrawCount / leagueStats.totalMatchCount}} </p>
+    <p>Draw rate  = {{ leagueStats.totalDrawCount / leagueStats.totalMatchCount}} </p>
+    <p>Total Goal count = {{ leagueStats.totalGoalCount }} </p>
+    <p>Goal per match = {{ leagueStats.totalGoalCount / leagueStats.totalMatchCount}} </p>
   </div>
 </template>
 
@@ -42,7 +44,7 @@ export default {
         'profitFixedWin', 'profitBackOnDrawFixedWin', 'profitLayOnDrawFixedLiability','drawRate',
         'drawRateForLast10Matches', 'averageGoal'],
       teamColumns: ['name', 'accumulativePointsDiff',
-        'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw', 'drawRate', 'drawRateForLast10Matches'],
+        'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw', 'drawRate', 'drawRateForLast10Matches', 'averageGoal'],
       options: {
         headings: {
           opponent: 'Opponent',
@@ -73,10 +75,12 @@ export default {
           totalProfitAsFav: 'Total profit as Fav',
           totalProfitBackOnDraw: 'Total Profit Back On Draw',
           drawRate: 'Draw Rate',
-          drawRateForLast10Matches: 'Last 10 Draw Rate'
+          drawRateForLast10Matches: 'Last 10 Draw Rate',
+          averageGoal: 'Average Goal'
         },
         sortable: ['name', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff',
-          'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw', 'drawRate', 'drawRateForLast10Matches'],
+          'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw', 'drawRate',
+          'drawRateForLast10Matches', 'averageGoal'],
         perPage: 100,
         perPageValues: [100, 200]
       }

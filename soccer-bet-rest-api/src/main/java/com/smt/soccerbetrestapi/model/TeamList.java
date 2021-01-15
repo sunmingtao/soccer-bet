@@ -44,10 +44,15 @@ public class TeamList {
     }
 
     public int getTotalDrawCount() {
-        return (int)teams.stream().flatMap(team -> team.getMatchStatsList().stream()).filter(matchStats -> matchStats.getActualPoints() == 1).count() / 2;
+        return (int)teams.stream().flatMap(team -> team.getMatchStatsList().stream())
+                .filter(matchStats -> matchStats.getActualPoints() == 1).count() / 2;
     }
 
     public int getTotalMatchCount() {
         return (int)teams.stream().flatMap(team -> team.getMatchStatsList().stream()).count() / 2;
+    }
+
+    public int getTotalGoalCount() {
+        return teams.stream().map(Team::getTotalGoal).reduce(0, Integer::sum);
     }
 }

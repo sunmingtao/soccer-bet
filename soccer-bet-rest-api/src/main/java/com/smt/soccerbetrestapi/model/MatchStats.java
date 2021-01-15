@@ -74,6 +74,10 @@ public class MatchStats extends LinkedNode<MatchStats> {
         return DoubleUtils.round(averageGoal, 2);
     }
 
+    public int getTotalGoal() {
+        return Stream.iterate(this, Objects::nonNull, MatchStats::getPrev).map(MatchStats::getScore1).reduce(0, Integer::sum);
+    }
+
     public double getWinProb() {
         return DoubleUtils.round(winProb, 2);
     }

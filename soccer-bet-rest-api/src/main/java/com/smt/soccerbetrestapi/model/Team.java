@@ -69,4 +69,12 @@ public class Team {
         return DoubleUtils.round(drawRate, 2);
     }
 
+    public double getAverageGoal() {
+        double averageGoal = getLastMatchStats().map(MatchStats::getAverageGoal).orElse(0d);
+        return DoubleUtils.round(averageGoal, 2);
+    }
+
+    public int getTotalGoal() {
+        return getLastMatchStats().map(MatchStats::getTotalGoal).orElse(0);
+    }
 }
