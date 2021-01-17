@@ -11,7 +11,7 @@
     <p>Total Profit as Strict Fav = {{ totalProfitAsStrictFav }}</p>
     <p>Total Profit Back On Draw = {{ totalProfitBackOnDraw }}</p>
     <p>Total Profit Lay On Draw Fixed Liability = {{ totalProfitLayOnDraw }}</p>
-    <v-client-table :columns="teamColumns" :data="teams" :options="teamOptions">
+    <v-client-table :columns="teamColumns" :data="teams" :options="teamOptions" @row-click="rowClicked">
       <div slot="child_row" slot-scope="props">
         More info
       </div>
@@ -101,6 +101,9 @@ export default {
       this.$http.get(`team/${this.season}?name=${teamName}`).then(response => {
         this.teamStats = response.data
       })
+    },
+    rowClicked(event) {
+      console.log("Data", event);
     },
     calculateProfit(teamStats) {
       return teamStats.reduce((partialResult, currentValue) => partialResult + currentValue.profitFixedWin, 0).toFixed(2);
