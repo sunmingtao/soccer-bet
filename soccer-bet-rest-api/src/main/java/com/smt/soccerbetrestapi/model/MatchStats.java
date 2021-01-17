@@ -68,14 +68,29 @@ public class MatchStats extends LinkedNode<MatchStats> {
     }
 
     public double getAverageGoal() {
-        long matchCount = Stream.iterate(this, Objects::nonNull, MatchStats::getPrev).count();
+        int matchCount = getMatchCount();
         int goalCount = Stream.iterate(this, Objects::nonNull, MatchStats::getPrev).map(MatchStats::getScore1).reduce(0, Integer::sum);
         double averageGoal = (double) goalCount / matchCount;
         return DoubleUtils.round(averageGoal, 2);
     }
 
+    public double getAverageGoalConceded() {
+        int matchCount = getMatchCount();
+        int goalConcededCount = Stream.iterate(this, Objects::nonNull, MatchStats::getPrev).map(MatchStats::getScore2).reduce(0, Integer::sum);
+        double averageGoal = (double) goalConcededCount / matchCount;
+        return DoubleUtils.round(averageGoal, 2);
+    }
+
+    private int getMatchCount() {
+        return (int)Stream.iterate(this, Objects::nonNull, MatchStats::getPrev).count();
+    }
+
     public int getTotalGoal() {
         return Stream.iterate(this, Objects::nonNull, MatchStats::getPrev).map(MatchStats::getScore1).reduce(0, Integer::sum);
+    }
+
+    public int getTotalGoalConceded() {
+        return Stream.iterate(this, Objects::nonNull, MatchStats::getPrev).map(MatchStats::getScore2).reduce(0, Integer::sum);
     }
 
     public double getWinProb() {
