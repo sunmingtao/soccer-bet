@@ -1,15 +1,21 @@
 <template>
   <div class="teams">
+
     <select v-model="teamSelected" @change="selectTeam($event)">
       <option v-for="team in teams" :key="team.name" :value="team.name">{{ team.name }}</option>
     </select>
-    <v-client-table v-if="teamStats.length > 0" :data="teamStats" :columns="columns" :options="options"> </v-client-table>
+    <v-client-table v-if="teamStats.length > 0" :data="teamStats" :columns="columns" :options="options">
+    </v-client-table>
     <p>Total Profit = {{ totalProfit }}</p>
     <p>Total Profit as Fav = {{ totalProfitAsFav }}</p>
     <p>Total Profit as Strict Fav = {{ totalProfitAsStrictFav }}</p>
     <p>Total Profit Back On Draw = {{ totalProfitBackOnDraw }}</p>
     <p>Total Profit Lay On Draw Fixed Liability = {{ totalProfitLayOnDraw }}</p>
-    <v-client-table :data="teams" :columns="teamColumns" :options="teamOptions"> </v-client-table>
+    <v-client-table :columns="teamColumns" :data="teams" :options="teamOptions">
+      <div slot="child_row" slot-scope="props">
+        More info
+      </div>
+    </v-client-table>
     <p>Total Profit For Lay = {{ leagueStats.totalProfitForLay }} </p>
     <p>Total Profit For Lay As Fav = {{ leagueStats.totalProfitForLayAsFav }} </p>
     <p>Total Profit For Lay As Strict Fav = {{ leagueStats.totalProfitForLayAsStrictFav }} </p>
@@ -35,16 +41,17 @@ export default {
     return {
       msg: 'Soccer bet',
       teamSelected: "",
-      leagues: [],
       teams: [],
+      leagues: [],
       teamStats: [],
       leagueStats: {},
       columns: ['opponent', 'homeOrAway', 'favouriteOrUnderDog', 'winProb', 'drawProb', 'expectedPoints', 'actualPoints',
         'pointsDifference', 'accumulativePointsDiff',
         'profitFixedWin', 'profitBackOnDrawFixedWin', 'profitLayOnDrawFixedLiability','drawRate',
-        'drawRateForLast10Matches', 'averageGoal'],
+        'drawRateForLast10Matches', 'averageGoal', 'averageGoalConceded'],
       teamColumns: ['name', 'accumulativePointsDiff',
-        'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw', 'drawRate', 'drawRateForLast10Matches', 'averageGoal'],
+        'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw', 'drawRate', 'drawRateForLast10Matches',
+        'averageGoal', 'averageGoalConceded'],
       options: {
         headings: {
           opponent: 'Opponent',
@@ -61,7 +68,8 @@ export default {
           profitLayOnDrawFixedLiability: 'Profit Lay on Draw',
           drawRate: 'Draw Rate',
           drawRateForLast10Matches: 'Last 10 Draw Rate',
-          averageGoal: 'Average goal'
+          averageGoal: 'Average Goal Scored',
+          averageGoalConceded: 'Average Goal Conceded'
         },
         filterable: false,
         perPage: 100,
@@ -76,11 +84,12 @@ export default {
           totalProfitBackOnDraw: 'Total Profit Back On Draw',
           drawRate: 'Draw Rate',
           drawRateForLast10Matches: 'Last 10 Draw Rate',
-          averageGoal: 'Average Goal'
+          averageGoal: 'Average Goal Scored',
+          averageGoalConceded: 'Average Goal Conceded'
         },
         sortable: ['name', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff',
           'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw', 'drawRate',
-          'drawRateForLast10Matches', 'averageGoal'],
+          'drawRateForLast10Matches', 'averageGoal', 'averageGoalConceded'],
         perPage: 100,
         perPageValues: [100, 200]
       }
@@ -118,7 +127,7 @@ export default {
     },
     totalProfitAsStrictFav() {
       return this.calculateProfit(this.teamStats.filter( value => value.winProb > 0.5))
-    }
+    },
   },
   beforeMount: function() {
     console.log(`Reload ${this.season} ${this.league}`);
@@ -129,3 +138,23 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.VueTables__child-row-toggler {
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  display: block;
+  margin: auto;
+  text-align: center;
+}
+
+.VueTables__child-row-toggler--closed::before {
+  content: "+";
+}
+
+.VueTables__child-row-toggler--open::before {
+  content: "-";
+}
+</style>
+

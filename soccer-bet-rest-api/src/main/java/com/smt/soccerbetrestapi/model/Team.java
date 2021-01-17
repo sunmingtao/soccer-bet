@@ -27,6 +27,13 @@ public class Team {
         return matchStatsList.isEmpty() ? Optional.empty() : Optional.of(matchStatsList.get(matchStatsList.size() - 1));
     }
 
+    /**
+     * To make child-row feature of vue table work
+     */
+    public String getId() {
+        return name;
+    }
+
     public double getAccumulativePointsDiff() {
         return getLastMatchStats().map(MatchStats::getAccumulativePointsDiff).orElse(0d);
     }
@@ -74,7 +81,16 @@ public class Team {
         return DoubleUtils.round(averageGoal, 2);
     }
 
+    public double getAverageGoalConceded() {
+        double averageGoal = getLastMatchStats().map(MatchStats::getAverageGoalConceded).orElse(0d);
+        return DoubleUtils.round(averageGoal, 2);
+    }
+
     public int getTotalGoal() {
         return getLastMatchStats().map(MatchStats::getTotalGoal).orElse(0);
+    }
+
+    public int getTotalGoalConceded() {
+        return getLastMatchStats().map(MatchStats::getTotalGoalConceded).orElse(0);
     }
 }
