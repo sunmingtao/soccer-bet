@@ -11,7 +11,8 @@
     <p>Total Profit as Strict Fav = {{ totalProfitAsStrictFav }}</p>
     <p>Total Profit Back On Draw = {{ totalProfitBackOnDraw }}</p>
     <p>Total Profit Lay On Draw Fixed Liability = {{ totalProfitLayOnDraw }}</p>
-    <v-client-table :columns="teamColumns" :data="teams" :options="teamOptions" @row-click="rowClicked">
+    <v-client-table ref="teamTable" :columns="teamColumns" :data="teams" :options="teamOptions">
+      <a slot="action" slot-scope="props" target="_blank" @click.prevent="clickTeam(props.row.name)" href="#">Action</a>
       <div slot="child_row" slot-scope="props">
         More info
       </div>
@@ -51,7 +52,7 @@ export default {
         'drawRateForLast10Matches', 'averageGoal', 'averageGoalConceded'],
       teamColumns: ['name', 'accumulativePointsDiff',
         'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw', 'drawRate', 'drawRateForLast10Matches',
-        'averageGoal', 'averageGoalConceded'],
+        'averageGoal', 'averageGoalConceded', 'action'],
       options: {
         headings: {
           opponent: 'Opponent',
@@ -85,13 +86,15 @@ export default {
           drawRate: 'Draw Rate',
           drawRateForLast10Matches: 'Last 10 Draw Rate',
           averageGoal: 'Average Goal Scored',
-          averageGoalConceded: 'Average Goal Conceded'
+          averageGoalConceded: 'Average Goal Conceded',
+          action: 'Action'
         },
         sortable: ['name', 'accumulativePointsDiff', 'last3MatchesPointsDiff', 'last5MatchesPointsDiff',
           'totalProfit', 'totalProfitAsFav', 'totalProfitBackOnDraw', 'drawRate',
           'drawRateForLast10Matches', 'averageGoal', 'averageGoalConceded'],
         perPage: 100,
-        perPageValues: [100, 200]
+        perPageValues: [100, 200],
+        showChildRowToggler: false
       }
     }
   },
@@ -102,8 +105,8 @@ export default {
         this.teamStats = response.data
       })
     },
-    rowClicked(event) {
-      console.log("Data", event);
+    clickTeam(teamName) {
+      this.$refs.teamTable.toggleChildRow(teamName);
     },
     calculateProfit(teamStats) {
       return teamStats.reduce((partialResult, currentValue) => partialResult + currentValue.profitFixedWin, 0).toFixed(2);
@@ -143,21 +146,6 @@ export default {
 </script>
 
 <style lang="scss">
-.VueTables__child-row-toggler {
-  width: 16px;
-  height: 16px;
-  line-height: 16px;
-  display: block;
-  margin: auto;
-  text-align: center;
-}
 
-.VueTables__child-row-toggler--closed::before {
-  content: "+";
-}
-
-.VueTables__child-row-toggler--open::before {
-  content: "-";
-}
 </style>
 
