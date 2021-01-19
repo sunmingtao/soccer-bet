@@ -12,9 +12,10 @@
     <p>Total Profit Back On Draw = {{ totalProfitBackOnDraw }}</p>
     <p>Total Profit Lay On Draw Fixed Liability = {{ totalProfitLayOnDraw }}</p>
     <v-client-table ref="teamTable" :columns="teamColumns" :data="teams" :options="teamOptions">
-      <a slot="action" slot-scope="props" target="_blank" @click.prevent="clickTeam(props.row.name)" href="#">Action</a>
+      <a slot="action" slot-scope="props" target="_blank" @click.prevent="clickTeam(props.row.name)" href="#">Show more</a>
       <div slot="child_row" slot-scope="props">
-        More info
+        <v-client-table :data="teamStatsMap[props.row.name]" :columns="columns" :options="options">
+        </v-client-table>
       </div>
     </v-client-table>
     <p>Total Profit For Lay = {{ leagueStats.totalProfitForLay }} </p>
@@ -45,6 +46,7 @@ export default {
       teams: [],
       leagues: [],
       teamStats: [],
+      teamStatsMap: {},
       leagueStats: {},
       columns: ['opponent', 'homeOrAway', 'favouriteOrUnderDog', 'winProb', 'drawProb', 'expectedPoints', 'actualPoints',
         'pointsDifference', 'accumulativePointsDiff',
@@ -106,7 +108,15 @@ export default {
       })
     },
     clickTeam(teamName) {
-      this.$refs.teamTable.toggleChildRow(teamName);
+      if (!this.teamStatsMap[teamName]) {
+        this.$http.get(`team/${this.season}?name=${teamName}`).then(response => {
+          this.teamStatsMap[teamName] = response.data
+          this.$refs.teamTable.toggleChildRow(teamName);
+          console.log("Open child rows " + this.$refs.teamTable.openChildRows);
+        })
+      } else {
+        this.$refs.teamTable.toggleChildRow(teamName);
+      }
     },
     calculateProfit(teamStats) {
       return teamStats.reduce((partialResult, currentValue) => partialResult + currentValue.profitFixedWin, 0).toFixed(2);
