@@ -12,7 +12,9 @@
     <p>Total Profit Back On Draw = {{ totalProfitBackOnDraw }}</p>
     <p>Total Profit Lay On Draw Fixed Liability = {{ totalProfitLayOnDraw }}</p>
     <v-client-table ref="teamTable" :columns="teamColumns" :data="teams" :options="teamOptions">
-      <a slot="action" slot-scope="props" target="_blank" @click.prevent="clickTeam(props.row.name)" href="#">Show more</a>
+      <a slot="action" slot-scope="props" target="_blank" @click.prevent="clickTeam(props.row.name)" href="#">
+        {{ isChildRowOpen(props.row.name) ? 'Show less' : 'Show more'}}
+      </a>
       <div slot="child_row" slot-scope="props">
         <v-client-table :data="teamStatsMap[props.row.name]" :columns="columns" :options="options">
         </v-client-table>
@@ -112,11 +114,13 @@ export default {
         this.$http.get(`team/${this.season}?name=${teamName}`).then(response => {
           this.teamStatsMap[teamName] = response.data
           this.$refs.teamTable.toggleChildRow(teamName);
-          console.log("Open child rows " + this.$refs.teamTable.openChildRows);
         })
       } else {
         this.$refs.teamTable.toggleChildRow(teamName);
       }
+    },
+    isChildRowOpen(teamName) {
+      return this.$refs.teamTable.$refs.table.openChildRows.includes(teamName);
     },
     calculateProfit(teamStats) {
       return teamStats.reduce((partialResult, currentValue) => partialResult + currentValue.profitFixedWin, 0).toFixed(2);
@@ -143,7 +147,7 @@ export default {
     },
     totalProfitAsStrictFav() {
       return this.calculateProfit(this.teamStats.filter( value => value.winProb > 0.5))
-    },
+    }
   },
   beforeMount: function() {
     console.log(`Reload ${this.season} ${this.league}`);
