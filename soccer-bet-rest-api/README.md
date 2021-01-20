@@ -20,3 +20,18 @@ aws ecr create-repository --repository-name soccer-bet # Only if the repository 
 docker tag soccer-bet-rest-api:latest 527875336349.dkr.ecr.ap-southeast-2.amazonaws.com/soccer-bet
 docker push 527875336349.dkr.ecr.ap-southeast-2.amazonaws.com/soccer-bet
 ```
+
+## Deploy to ECS
+
+### Create stack
+
+```
+aws cloudformation create-stack --stack-name example-deployment --template-body file://./ecs.yml --capabilities CAPABILITY_NAMED_IAM --parameters 'ParameterKey=SubnetID,ParameterValue=<subnet-Id>'
+```
+
+### Update stack
+
+
+```
+aws cloudformation update-stack --stack-name example-deployment --template-body file://./ecs.yml --capabilities CAPABILITY_NAMED_IAM --parameters 'ParameterKey=SubnetID,ParameterValue=<subnet-Id>'
+```
