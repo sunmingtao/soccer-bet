@@ -26,12 +26,15 @@ docker push 527875336349.dkr.ecr.ap-southeast-2.amazonaws.com/soccer-bet
 ### Create stack
 
 ```
-aws cloudformation create-stack --stack-name example-deployment --template-body file://./ecs.yml --capabilities CAPABILITY_NAMED_IAM --parameters 'ParameterKey=SubnetID,ParameterValue=<subnet-Id>'
+aws cloudformation create-stack --stack-name soccer-bet-stack --template-body file://./ecs.yml --capabilities CAPABILITY_NAMED_IAM --parameters 'ParameterKey=SubnetID,ParameterValue=<subnet-Id>'
 ```
 
 ### Update stack
 
+```
+aws cloudformation update-stack --stack-name soccer-bet-stack --template-body file://./ecs.yml --capabilities CAPABILITY_NAMED_IAM --parameters 'ParameterKey=SubnetID,ParameterValue=<subnet-Id>'
+```
 
-```
-aws cloudformation update-stack --stack-name example-deployment --template-body file://./ecs.yml --capabilities CAPABILITY_NAMED_IAM --parameters 'ParameterKey=SubnetID,ParameterValue=<subnet-Id>'
-```
+### Delete stack
+
+```aws cloudformation delete-stack --stack-name soccer-bet-stack```
