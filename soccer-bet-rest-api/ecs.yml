@@ -2,6 +2,8 @@ AWSTemplateFormatVersion: "2010-09-09"
 Parameters:
   SubnetID:
     Type: String
+  AccessKeySecretKey:
+    Type: 'AWS::SSM::Parameter::Value<String>'
 
 Resources:
   Cluster:
@@ -57,6 +59,9 @@ Resources:
               awslogs-region: !Ref AWS::Region
               awslogs-group: !Ref LogGroup
               awslogs-stream-prefix: ecs
+          Environment:
+            - Name: JAVA_OPTS
+              Value: !Ref AccessKeySecretKey
       RequiresCompatibilities:
         - EC2
         - FARGATE
