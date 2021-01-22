@@ -5,13 +5,14 @@
       <option v-for="season in seasons" :key="season" :value="season">{{ season }}</option>
     </select>
     <div v-if="seasonSelected != ''">
-      <b-tabs content-class="mt-3">
-        <b-tab v-for="league in leagues" :title="league" :key="league">
-          <app-teams v-bind:league="league" v-bind:season="seasonSelected" :key="seasonSelected"></app-teams>
+      <b-tabs active-nav-item-class="font-weight-bold text-uppercase text-danger"
+              active-tab-class="font-weight-bold text-success"
+              content-class="mt-3" v-model="activeTabIndex">
+        <b-tab v-for="(league, index) in leagues" :title="league" :key="league">
+          <app-teams v-if="activeTabIndex == index" v-bind:league="league" v-bind:season="seasonSelected" :key="seasonSelected"></app-teams>
         </b-tab>
       </b-tabs>
     </div>
-
   </div>
 </template>
 
@@ -29,7 +30,8 @@ export default {
       msg: 'Soccer bet',
       leagues: [],
       seasons: [],
-      seasonSelected: ""
+      seasonSelected: "",
+      activeTabIndex: 0
     }
   },
   beforeMount: function() {
