@@ -12,7 +12,7 @@ public class CsvReader {
 
     public static void main(String[] args) throws Exception {
         Reader reader = Files.newBufferedReader(Paths.get(
-                ClassLoader.getSystemResource("nba_betting_money_line.csv").toURI()));
+                ClassLoader.getSystemResource("nba_.csv").toURI()));
         System.out.println(readAll(reader).size());
     }
 
