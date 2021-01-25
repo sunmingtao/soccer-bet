@@ -24,3 +24,8 @@ hs_err_pid*
 
 .idea/
 */.mvn/
+
+*/mvnw
+*/mvnw.cmd
+node_modules/
+package-lock.json
