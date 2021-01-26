@@ -3,7 +3,7 @@ package com.smt.nba;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
-import com.smt.nba.model.MoneyLine;
+import com.smt.nba.csvbean.GameCsv;
 import lombok.SneakyThrows;
 
 import java.io.BufferedReader;
@@ -17,9 +17,14 @@ import java.util.List;
 public class CsvReader {
 
     public static void main(String[] args) throws Exception {
+//        Path path = Paths.get(
+//                ClassLoader.getSystemResource("nba_betting_money_line.csv").toURI());
+//        System.out.println(beanBuilderExample(path, MoneyLine.class));
+
         Path path = Paths.get(
-                ClassLoader.getSystemResource("nba_betting_money_line.csv").toURI());
-        System.out.println(beanBuilderExample(path, MoneyLine.class));
+                ClassLoader.getSystemResource("nba_games_all.csv").toURI());
+        System.out.println(beanBuilderExample(path, GameCsv.class));
+
     }
 
     @SneakyThrows(IOException.class)

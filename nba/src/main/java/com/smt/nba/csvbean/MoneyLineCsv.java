@@ -1,4 +1,4 @@
-package com.smt.nba.model;
+package com.smt.nba.csvbean;
 
 import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class MoneyLine {
+public class MoneyLineCsv {
     @CsvBindByName(column = "game_id")
     private String gameId;
 
@@ -28,4 +28,7 @@ public class MoneyLine {
     @CsvBindByName
     private double price2;
 
+    public boolean isSameGameIdAndBookId(String gameId, String bookId) {
+        return gameId.equals(this.gameId) && bookId.equals(this.bookId);
+    }
 }
