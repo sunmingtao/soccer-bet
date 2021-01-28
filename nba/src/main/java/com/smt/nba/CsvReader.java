@@ -4,6 +4,8 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 import com.smt.nba.csvbean.GameCsv;
+import com.smt.nba.csvbean.MoneyLineCsv;
+import com.smt.nba.model.Game;
 import lombok.SneakyThrows;
 
 import java.io.BufferedReader;
@@ -17,14 +19,16 @@ import java.util.List;
 public class CsvReader {
 
     public static void main(String[] args) throws Exception {
-//        Path path = Paths.get(
-//                ClassLoader.getSystemResource("nba_betting_money_line.csv").toURI());
-//        System.out.println(beanBuilderExample(path, MoneyLine.class));
+        Path moneyLinePath = Paths.get(
+                ClassLoader.getSystemResource("nba_betting_money_line.csv").toURI());
+        List<MoneyLineCsv> moneyLineCsvList = beanBuilderExample(moneyLinePath, MoneyLineCsv.class);
 
-        Path path = Paths.get(
+        Path gamePath = Paths.get(
                 ClassLoader.getSystemResource("nba_games_all.csv").toURI());
-        System.out.println(beanBuilderExample(path, GameCsv.class));
+        List<GameCsv> gameCsvList = beanBuilderExample(gamePath, GameCsv.class);
 
+        List<Game> games = Game.toGames(gameCsvList, moneyLineCsvList, "238");
+        System.out.println(games.size());
     }
 
     @SneakyThrows(IOException.class)

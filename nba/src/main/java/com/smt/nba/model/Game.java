@@ -5,6 +5,7 @@ import com.smt.nba.csvbean.MoneyLineCsv;
 import lombok.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Data
@@ -44,13 +45,12 @@ public class Game {
     }
 
     public static List<Game> toGames(List<GameCsv> gameCsvList, List<MoneyLineCsv> moneyLineCsvList, String bookId) {
-        return gameCsvList.stream().map(gameCsv -> fromCsv(gameCsv, moneyLineCsvList, bookId)).collect(Collectors.toList());
+        return gameCsvList.stream().map(gameCsv -> fromCsv(gameCsv, moneyLineCsvList, bookId))
+                .filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     private static Game fromCsv(GameCsv gameCsv, List<MoneyLineCsv> moneyLineCsvList, String bookId) {
-        MoneyLineCsv moneyLineCsv = moneyLineCsvList.stream().filter(moneyLine -> moneyLine.isSameGameIdAndBookId(gameCsv.getGameId(), bookId))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Game " + gameCsv.getGameId() + " with Bookie " + bookId + " doesn't exist"));
-        return Game.getInstance(moneyLineCsv, gameCsv);
+        return moneyLineCsvList.stream().filter(moneyLine -> moneyLine.isSameGameIdAndBookId(gameCsv.getGameId(), bookId))
+                .findFirst().map(moneyLine -> Game.getInstance(moneyLine, gameCsv)).orElse(null);
     }
 }
