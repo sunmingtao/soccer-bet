@@ -23,9 +23,11 @@ public class CsvReader {
                 ClassLoader.getSystemResource("nba_betting_money_line.csv").toURI());
         List<MoneyLineCsv> moneyLineCsvList = beanBuilderExample(moneyLinePath, MoneyLineCsv.class);
 
+        System.out.println("Read money line completed");
         Path gamePath = Paths.get(
                 ClassLoader.getSystemResource("nba_games_all.csv").toURI());
         List<GameCsv> gameCsvList = beanBuilderExample(gamePath, GameCsv.class);
+        System.out.println("Read all games completed");
 
         List<Game> games = Game.toGames(gameCsvList, moneyLineCsvList, "238");
         System.out.println(games.size());

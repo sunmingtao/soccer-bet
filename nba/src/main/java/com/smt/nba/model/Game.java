@@ -5,7 +5,9 @@ import com.smt.nba.csvbean.MoneyLineCsv;
 import lombok.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
@@ -45,12 +47,14 @@ public class Game {
     }
 
     public static List<Game> toGames(List<GameCsv> gameCsvList, List<MoneyLineCsv> moneyLineCsvList, String bookId) {
-        return gameCsvList.stream().map(gameCsv -> fromCsv(gameCsv, moneyLineCsvList, bookId))
+        Map<String, MoneyLineGames> moneyLineGamesMap = MoneyLineGames.fromMoneyLineCsvList(moneyLineCsvList);
+        return gameCsvList.stream().map(gameCsv -> fromCsv(gameCsv, moneyLineGamesMap, bookId))
                 .filter(Objects::nonNull).collect(Collectors.toList());
     }
 
-    private static Game fromCsv(GameCsv gameCsv, List<MoneyLineCsv> moneyLineCsvList, String bookId) {
-        return moneyLineCsvList.stream().filter(moneyLine -> moneyLine.isSameGameIdAndBookId(gameCsv.getGameId(), bookId))
-                .findFirst().map(moneyLine -> Game.getInstance(moneyLine, gameCsv)).orElse(null);
+    private static Game fromCsv(GameCsv gameCsv, Map<String, MoneyLineGames> moneyLineGamesMap, String bookId) {
+        return Optional.ofNullable(moneyLineGamesMap.get(gameCsv.getGameId()))
+                .flatMap(moneyLineGames -> moneyLineGames.findByBookId(bookId))
+                .map(moneyLineCsv -> Game.getInstance(moneyLineCsv, gameCsv)).orElse(null);
     }
 }
