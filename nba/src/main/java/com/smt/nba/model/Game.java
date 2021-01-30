@@ -11,8 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
-@ToString
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class Game {
     private final String gameId;
     private final String bookName;
@@ -23,12 +22,61 @@ public class Game {
     private final boolean home;
     private final boolean win;
 
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("GameId=" + gameId + "，");
+        sb.append("Book name=" + bookName + "，");
+        sb.append("Team Id 1=" + teamId1 + "，");
+        sb.append("Team Id 2=" + teamId2 + "，");
+        sb.append("US odds 1=" + usOdds1 + "，");
+        sb.append("US odds 2=" + usOdds2 + "，");
+        sb.append("Decimal odds 1=" + getDecimalOdds1() + "，");
+        sb.append("Decimal odds 2=" + getDecimalOdds2() + "，");
+        sb.append("Is home=" + home + "，");
+        sb.append("Is Team 1 win=" + win + "，");
+        sb.append("Profit as favourite=" + getProfitOnFavourite() + "，");
+        sb.append("Profit as underdog=" + getProfitOnUnderdog() + "，");
+        return sb.toString();
+    }
+
     public double getDecimalOdds1() {
         return usOddsToDecimalOdds(usOdds1);
     }
 
     public double getDecimalOdds2() {
         return usOddsToDecimalOdds(usOdds2);
+    }
+
+    public double getProfitOnUnderdog() {
+        return isUnderdogWin() ? 100 * (getUnderdogOdds() - 1) : -100;
+    }
+
+    public double getProfitOnFavourite() {
+        return isFavouriteWin() ? 100 * (getFavouriteOdds() - 1) : -100;
+    }
+
+    private double getUnderdogOdds() {
+        return Math.max(getDecimalOdds1(), getDecimalOdds2());
+    }
+
+    private double getFavouriteOdds() {
+        return Math.min(getDecimalOdds1(), getDecimalOdds2());
+    }
+
+    private boolean isUnderdogWin() {
+        return (isTeam1Underdog() && win) || (isTeam2Underdog() && !win);
+    }
+
+    private boolean isFavouriteWin() {
+        return !isUnderdogWin();
+    }
+
+    private boolean isTeam1Underdog() {
+        return getDecimalOdds1() == getUnderdogOdds();
+    }
+
+    private boolean isTeam2Underdog() {
+        return !isTeam1Underdog();
     }
 
     protected static double usOddsToDecimalOdds(double usOdds) {
@@ -40,8 +88,8 @@ public class Game {
 
     public static Game getInstance(MoneyLineCsv moneyLineCsv, GameCsv gameCsv) {
         return new Game(
-                moneyLineCsv.getGameId(), moneyLineCsv.getBookName(), moneyLineCsv.getTeamId1(),
-                moneyLineCsv.getTeamId2(), moneyLineCsv.getPrice1(), moneyLineCsv.getPrice2(),
+                moneyLineCsv.getGameId(), moneyLineCsv.getBookName(), gameCsv.getTeamId1(),
+                gameCsv.getTeamId2(), moneyLineCsv.getPrice(gameCsv.getTeamId1()), moneyLineCsv.getPrice(gameCsv.getTeamId2()),
                 gameCsv.isHome(), gameCsv.isWin()
         );
     }

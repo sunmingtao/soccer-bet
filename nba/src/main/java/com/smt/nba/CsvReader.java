@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CsvReader {
 
@@ -30,7 +31,12 @@ public class CsvReader {
         System.out.println("Read all games completed");
 
         List<Game> games = Game.toGames(gameCsvList, moneyLineCsvList, "238");
-        System.out.println(games.size());
+        System.out.println("Total number of games " + games.size());
+
+        double profitOnUnderdog = games.stream().map(Game::getProfitOnUnderdog).reduce(0d, Double::sum);
+        System.out.println("Total profit on underdog is " + profitOnUnderdog);
+        double profitOnFavourite = games.stream().map(Game::getProfitOnFavourite).reduce(0d, Double::sum);
+        System.out.println("Total profit on favourite is " + profitOnFavourite);
     }
 
     @SneakyThrows(IOException.class)

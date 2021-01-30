@@ -35,7 +35,7 @@ class GameTest {
             MoneyLineCsv moneyLineCsv1 = new MoneyLineCsv("001", "Pinnacle", "100", "1", "2", 110.00, -110.00);
             MoneyLineCsv moneyLineCsv2 = new MoneyLineCsv("001", "Sportsbet", "101", "1", "2", 120.00, -110.00);
             MoneyLineCsv moneyLineCsv3 = new MoneyLineCsv("001", "Bookmaker", "103", "1", "2", 110.00, -120.00);
-            MoneyLineCsv moneyLineCsv4 = new MoneyLineCsv("002", "Pinnacle", "100", "3", "4", 160.00, -230.00);
+            MoneyLineCsv moneyLineCsv4 = new MoneyLineCsv("002", "Pinnacle", "100", "4", "3", 160.00, -230.00);
             List<GameCsv> gameCsvList = Arrays.asList(gameCsv1, gameCsv2, gameCsv3);
             List<MoneyLineCsv> moneyLineCsvList = Arrays.asList(moneyLineCsv1, moneyLineCsv2, moneyLineCsv3, moneyLineCsv4);
             List<Game> games = Game.toGames(gameCsvList, moneyLineCsvList, "100");
@@ -54,12 +54,46 @@ class GameTest {
             Assertions.assertEquals("Pinnacle", game2.getBookName());
             Assertions.assertEquals("3", game2.getTeamId1());
             Assertions.assertEquals("4", game2.getTeamId2());
-            Assertions.assertEquals(160.00, game2.getUsOdds1());
-            Assertions.assertEquals(-230.00, game2.getUsOdds2());
+            Assertions.assertEquals(-230.00, game2.getUsOdds1());
+            Assertions.assertEquals(160.00, game2.getUsOdds2());
             Assertions.assertFalse(game2.isHome());
             Assertions.assertFalse(game2.isWin());
         }
+    }
 
+    @Nested
+    class Test_getProfit{
+        @Test
+        void team1AsUnderdogWin() {
+            Game game = new Game("001", "Pinnacle",
+                    "1", "2", 300d, -200d, true, true);
+            Assertions.assertEquals(300d, game.getProfitOnUnderdog());
+            Assertions.assertEquals(-100d, game.getProfitOnFavourite());
+        }
+
+        @Test
+        void team2AsUnderdogWin() {
+            Game game = new Game("001", "Pinnacle",
+                    "1", "2", -200d, 300d, true, false);
+            Assertions.assertEquals(300d, game.getProfitOnUnderdog());
+            Assertions.assertEquals(-100d, game.getProfitOnFavourite());
+        }
+
+        @Test
+        void team1AsFavouriteWin() {
+            Game game = new Game("001", "Pinnacle",
+                    "1", "2", 300d, -200d, true, false);
+            Assertions.assertEquals(-100d, game.getProfitOnUnderdog());
+            Assertions.assertEquals(50d, game.getProfitOnFavourite());
+        }
+
+        @Test
+        void team2AsFavouriteWin() {
+            Game game = new Game("001", "Pinnacle",
+                    "1", "2", -200d, 300d, true, true);
+            Assertions.assertEquals(-100d, game.getProfitOnUnderdog());
+            Assertions.assertEquals(50d, game.getProfitOnFavourite());
+        }
     }
 
 }

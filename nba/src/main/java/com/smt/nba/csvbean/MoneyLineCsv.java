@@ -32,6 +32,16 @@ public class MoneyLineCsv {
     @CsvBindByName
     private double price2;
 
+    public double getPrice(String teamId) {
+        if (teamId.equalsIgnoreCase(teamId1)) {
+            return price1;
+        }
+        if (teamId.equalsIgnoreCase(teamId2)) {
+            return price2;
+        }
+        throw new IllegalArgumentException("Invalid team id: " + teamId);
+    }
+
     public boolean isSameGameIdAndBookId(String gameId, String bookId) {
         return gameId.equals(this.gameId) && bookId.equals(this.bookId);
     }
