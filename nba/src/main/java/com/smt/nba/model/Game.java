@@ -55,6 +55,11 @@ public class Game {
         return isFavouriteWin() ? 100 * (getFavouriteOdds() - 1) : -100;
     }
 
+    public boolean isUnderdogOddsBetween(double odds1, double odds2) {
+        double underdogOdds = getUnderdogOdds();
+        return odds1 <= underdogOdds && odds2 >= underdogOdds;
+    }
+
     private double getUnderdogOdds() {
         return Math.max(getDecimalOdds1(), getDecimalOdds2());
     }
