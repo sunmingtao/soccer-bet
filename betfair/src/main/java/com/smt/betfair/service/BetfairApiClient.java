@@ -1,5 +1,10 @@
 package com.smt.betfair.service;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.smt.betfair.dto.ApiRequest;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,8 +27,18 @@ public class BetfairApiClient {
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Authentication", sessionToken);
         headers.set("X-Application", apiKey);
-        String body = "[{\"method\": \"SportsAPING/v1.0/listEventTypes\", \"params\": {\"filter\":{}}}]";
+        String body = getRequest();
+        System.out.println("Request = " + body);
         HttpEntity<String> entity = new HttpEntity<>(body, headers);
         return restTemplate.postForObject(BETFAIR_API_URL, entity, String.class);
     }
+
+    @SneakyThrows(JsonProcessingException.class)
+    private String getRequest() {
+        ObjectMapper mapper = new ObjectMapper();
+        ApiRequest request = new ApiRequest();
+        request.setMethod("SportsAPING/v1.0/listEventTypes");
+        return mapper.writeValueAsString(request);
+    }
 }
+
