@@ -1,4 +1,4 @@
-package com.smt.betfair.dto;
+package com.smt.betfair.dto.request;
 
 import lombok.Data;
 
