@@ -22,4 +22,9 @@ public class HomeController {
     public ApiResponse listEvents(@PathVariable int eventTypeId) {
         return betfairApiClient.listEvents(eventTypeId);
     }
+
+    @GetMapping("/findMarketId/{eventId}/{marketType}")
+    public String findMarketId(@PathVariable int eventId, @PathVariable String marketType) {
+        return betfairApiClient.findMarketId(eventId, marketType);
+    }
 }

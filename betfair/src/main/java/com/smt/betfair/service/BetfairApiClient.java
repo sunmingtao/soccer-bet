@@ -38,6 +38,13 @@ public class BetfairApiClient {
         return restTemplate.postForObject(BETFAIR_API_URL, entity, ApiResponse.class);
     }
 
+    public String findMarketId(int eventId, String marketType) {
+        RestTemplate restTemplate = new RestTemplate();
+        String body = assembleRequestForFindMarketId(eventId, marketType);
+        HttpEntity<String> entity = new HttpEntity<>(body, assembleHeaders());
+        return restTemplate.postForObject(BETFAIR_API_URL, entity, String.class);
+    }
+
     private HttpHeaders assembleHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Authentication", sessionToken);
@@ -61,5 +68,18 @@ public class BetfairApiClient {
         request.getParams().getFilter().setEventTypeIds(List.of(eventTypeId));
         return mapper.writeValueAsString(request);
     }
+
+    @SneakyThrows(JsonProcessingException.class)
+    private String assembleRequestForFindMarketId(int eventId, String marketType) {
+        ObjectMapper mapper = new ObjectMapper();
+        ApiRequest request = new ApiRequest();
+        request.setMethod("SportsAPING/v1.0/listMarketCatalogue");
+        request.getParams().getFilter().setEventIds(List.of(eventId));
+        request.getParams().getFilter().setMarketTypeCodes(List.of(marketType));
+        request.getParams().setMaxResults(1);
+        return mapper.writeValueAsString(request);
+    }
+
+
 }
 
