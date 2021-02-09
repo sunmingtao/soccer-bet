@@ -23,8 +23,20 @@ public class HomeController {
         return betfairApiClient.listEvents(eventTypeId);
     }
 
+    /**
+     * e.g. http://localhost:8080/findMarketId/30267579/MATCH_ODDS
+     */
     @GetMapping("/findMarketId/{eventId}/{marketType}")
-    public String findMarketId(@PathVariable int eventId, @PathVariable String marketType) {
+    public ApiResponse findMarketId(@PathVariable int eventId, @PathVariable String marketType) {
         return betfairApiClient.findMarketId(eventId, marketType);
     }
+
+    /**
+     * http://localhost:8080/findMatchOdds/1.178846026
+     */
+    @GetMapping("/findMatchOdds/{marketId}")
+    public String findMatchOdds(@PathVariable String marketId) {
+        return betfairApiClient.findMatchOdds(marketId);
+    }
+
 }

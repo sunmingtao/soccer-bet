@@ -38,9 +38,16 @@ public class BetfairApiClient {
         return restTemplate.postForObject(BETFAIR_API_URL, entity, ApiResponse.class);
     }
 
-    public String findMarketId(int eventId, String marketType) {
+    public ApiResponse findMarketId(int eventId, String marketType) {
         RestTemplate restTemplate = new RestTemplate();
         String body = assembleRequestForFindMarketId(eventId, marketType);
+        HttpEntity<String> entity = new HttpEntity<>(body, assembleHeaders());
+        return restTemplate.postForObject(BETFAIR_API_URL, entity, ApiResponse.class);
+    }
+
+    public String findMatchOdds(String marketType) {
+        RestTemplate restTemplate = new RestTemplate();
+        String body = assembleRequestForFindMatchOdds(marketType);
         HttpEntity<String> entity = new HttpEntity<>(body, assembleHeaders());
         return restTemplate.postForObject(BETFAIR_API_URL, entity, String.class);
     }
@@ -80,6 +87,16 @@ public class BetfairApiClient {
         return mapper.writeValueAsString(request);
     }
 
-
+//    [{"jsonrpc": "2.0", "method": "SportsAPING/v1.0/listMarketBook",
+//            "params": {"marketIds":["1.178846026"],"priceProjection":{"priceData":["EX_BEST_OFFERS"]}}}]
+    @SneakyThrows(JsonProcessingException.class)
+    public String assembleRequestForFindMatchOdds(String marketId) {
+        ObjectMapper mapper = new ObjectMapper();
+        ApiRequest request = new ApiRequest();
+        request.setMethod("SportsAPING/v1.0/listMarketBook");
+        request.getParams().setMarketIds(List.of(marketId));
+        request.getParams().getPriceProjection().setPriceData(List.of("EX_BEST_OFFERS"));
+        return mapper.writeValueAsString(request);
+    }
 }
 

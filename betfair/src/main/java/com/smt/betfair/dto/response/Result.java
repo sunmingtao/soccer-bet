@@ -8,4 +8,7 @@ import lombok.ToString;
 public class Result {
     private Event event;
     private int marketCount;
+    private String marketId;
+    private String marketName;
+    private double totalMatched;
 }
