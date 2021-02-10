@@ -35,7 +35,7 @@ public class HomeController {
      * http://localhost:8080/findMatchOdds/1.178846026
      */
     @GetMapping("/findMatchOdds/{marketId}")
-    public String findMatchOdds(@PathVariable String marketId) {
+    public ApiResponse findMatchOdds(@PathVariable String marketId) {
         return betfairApiClient.findMatchOdds(marketId);
     }
 

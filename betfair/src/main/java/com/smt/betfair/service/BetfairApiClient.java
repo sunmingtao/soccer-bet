@@ -45,11 +45,11 @@ public class BetfairApiClient {
         return restTemplate.postForObject(BETFAIR_API_URL, entity, ApiResponse.class);
     }
 
-    public String findMatchOdds(String marketType) {
+    public ApiResponse findMatchOdds(String marketType) {
         RestTemplate restTemplate = new RestTemplate();
         String body = assembleRequestForFindMatchOdds(marketType);
         HttpEntity<String> entity = new HttpEntity<>(body, assembleHeaders());
-        return restTemplate.postForObject(BETFAIR_API_URL, entity, String.class);
+        return restTemplate.postForObject(BETFAIR_API_URL, entity, ApiResponse.class);
     }
 
     private HttpHeaders assembleHeaders() {
