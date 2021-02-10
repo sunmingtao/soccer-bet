@@ -20,7 +20,7 @@ public class HomeController {
 
     @GetMapping("/listEvents/{eventTypeId}")
     public ApiResponse listEvents(@PathVariable int eventTypeId) {
-        return betfairApiClient.listEvents(eventTypeId);
+        return betfairApiClient.listEventsByEventTypeId(eventTypeId);
     }
 
     /**

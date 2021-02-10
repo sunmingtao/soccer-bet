@@ -31,9 +31,16 @@ public class BetfairApiClient {
         return restTemplate.postForObject(BETFAIR_API_URL, entity, String.class);
     }
 
-    public ApiResponse listEvents(int eventId) {
+    public ApiResponse listEventsByEventTypeId(int eventTypeId) {
         RestTemplate restTemplate = new RestTemplate();
-        String body = assembleRequestForListEvents(eventId);
+        String body = assembleRequestForListEvents(List.of(eventTypeId), List.of());
+        HttpEntity<String> entity = new HttpEntity<>(body, assembleHeaders());
+        return restTemplate.postForObject(BETFAIR_API_URL, entity, ApiResponse.class);
+    }
+
+    public ApiResponse findEventByEventId(int eventId) {
+        RestTemplate restTemplate = new RestTemplate();
+        String body = assembleRequestForListEvents(List.of(), List.of(eventId));
         HttpEntity<String> entity = new HttpEntity<>(body, assembleHeaders());
         return restTemplate.postForObject(BETFAIR_API_URL, entity, ApiResponse.class);
     }
@@ -68,11 +75,12 @@ public class BetfairApiClient {
     }
 
     @SneakyThrows(JsonProcessingException.class)
-    private String assembleRequestForListEvents(int eventTypeId) {
+    private String assembleRequestForListEvents(List<Integer> eventTypeIds, List<Integer> eventIds) {
         ObjectMapper mapper = new ObjectMapper();
         ApiRequest request = new ApiRequest();
         request.setMethod("SportsAPING/v1.0/listEvents");
-        request.getParams().getFilter().setEventTypeIds(List.of(eventTypeId));
+        request.getParams().getFilter().setEventTypeIds(eventTypeIds);
+        request.getParams().getFilter().setEventIds(eventIds);
         return mapper.writeValueAsString(request);
     }
 
