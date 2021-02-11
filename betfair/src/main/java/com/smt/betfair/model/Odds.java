@@ -1,14 +1,16 @@
 package com.smt.betfair.model;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @Data
 @ToString
+@RequiredArgsConstructor
 public class Odds {
-    private int eventId;
-    private String eventName;
-    private double lastMatched;
-    private double back;
-    private double lay;
+    private final int eventId;
+    private final String eventName;
+    private final double winOdds;
+    private final double lossOdds;
+    private final double drawOdds;
 }

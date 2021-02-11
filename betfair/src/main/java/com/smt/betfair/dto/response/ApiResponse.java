@@ -11,4 +11,8 @@ import java.util.List;
 public class ApiResponse {
     private String jsonrpc;
     private List<Result> result = new ArrayList<>();
+
+    public Result getFirstResult() {
+        return result.get(0);
+    }
 }

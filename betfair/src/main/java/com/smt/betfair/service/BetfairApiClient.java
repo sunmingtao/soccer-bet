@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smt.betfair.dto.request.ApiRequest;
 import com.smt.betfair.dto.response.ApiResponse;
+import com.smt.betfair.enums.MarketType;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -45,16 +46,16 @@ public class BetfairApiClient {
         return restTemplate.postForObject(BETFAIR_API_URL, entity, ApiResponse.class);
     }
 
-    public ApiResponse findMarketId(int eventId, String marketType) {
+    public ApiResponse findMarketId(int eventId, MarketType marketType) {
         RestTemplate restTemplate = new RestTemplate();
         String body = assembleRequestForFindMarketId(eventId, marketType);
         HttpEntity<String> entity = new HttpEntity<>(body, assembleHeaders());
         return restTemplate.postForObject(BETFAIR_API_URL, entity, ApiResponse.class);
     }
 
-    public ApiResponse findMatchOdds(String marketType) {
+    public ApiResponse findMatchOdds(String marketId) {
         RestTemplate restTemplate = new RestTemplate();
-        String body = assembleRequestForFindMatchOdds(marketType);
+        String body = assembleRequestForFindMatchOdds(marketId);
         HttpEntity<String> entity = new HttpEntity<>(body, assembleHeaders());
         return restTemplate.postForObject(BETFAIR_API_URL, entity, ApiResponse.class);
     }
@@ -85,18 +86,16 @@ public class BetfairApiClient {
     }
 
     @SneakyThrows(JsonProcessingException.class)
-    private String assembleRequestForFindMarketId(int eventId, String marketType) {
+    private String assembleRequestForFindMarketId(int eventId, MarketType marketType) {
         ObjectMapper mapper = new ObjectMapper();
         ApiRequest request = new ApiRequest();
         request.setMethod("SportsAPING/v1.0/listMarketCatalogue");
         request.getParams().getFilter().setEventIds(List.of(eventId));
-        request.getParams().getFilter().setMarketTypeCodes(List.of(marketType));
+        request.getParams().getFilter().setMarketTypeCodes(List.of(marketType.name()));
         request.getParams().setMaxResults(1);
         return mapper.writeValueAsString(request);
     }
 
-//    [{"jsonrpc": "2.0", "method": "SportsAPING/v1.0/listMarketBook",
-//            "params": {"marketIds":["1.178846026"],"priceProjection":{"priceData":["EX_BEST_OFFERS"]}}}]
     @SneakyThrows(JsonProcessingException.class)
     public String assembleRequestForFindMatchOdds(String marketId) {
         ObjectMapper mapper = new ObjectMapper();
