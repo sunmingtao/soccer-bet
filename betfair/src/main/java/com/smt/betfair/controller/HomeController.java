@@ -5,6 +5,7 @@ import com.smt.betfair.enums.MarketType;
 import com.smt.betfair.model.Odds;
 import com.smt.betfair.service.BetfairApiClient;
 import com.smt.betfair.service.BetfairApiService;
+import com.smt.betfair.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ public class HomeController {
 
     private final BetfairApiClient betfairApiClient;
     private final BetfairApiService betfairApiService;
+    private final LoginService loginService;
 
     @GetMapping("/listEventsTypes")
     public String listEventTypes() {
@@ -46,5 +48,10 @@ public class HomeController {
     @GetMapping("lastTradedPrices/{eventId}")
     public Odds findLastTradedPrices(@PathVariable int eventId) {
         return betfairApiService.findLastTradedPrices(eventId);
+    }
+
+    @GetMapping("sessionToken")
+    public String getSessionToken() {
+        return loginService.getSessionToken();
     }
 }
