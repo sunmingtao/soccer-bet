@@ -1,6 +1,8 @@
 package com.smt.betfair.service;
 
+import com.smt.betfair.dto.response.LoginResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -23,11 +25,12 @@ public class LoginService {
     @Value("${betfair.api.key}")
     private String apiKey;
 
-    public String getSessionToken() {
+    @Cacheable(value = "loginCache", key = "{#root.methodName}")
+    public LoginResponse login() {
         RestTemplate restTemplate = new RestTemplate();
         String body = "username="+ username +"&password=" + password;
         HttpEntity<String> entity = new HttpEntity<>(body, assembleHeaders());
-        return restTemplate.postForObject(BETFAIR_LOGIN_URL, entity, String.class);
+        return restTemplate.postForObject(BETFAIR_LOGIN_URL, entity, LoginResponse.class);
     }
 
     private HttpHeaders assembleHeaders() {

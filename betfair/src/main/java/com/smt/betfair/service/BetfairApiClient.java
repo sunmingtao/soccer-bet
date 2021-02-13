@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smt.betfair.dto.request.ApiRequest;
 import com.smt.betfair.dto.response.ApiResponse;
 import com.smt.betfair.enums.MarketType;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -15,12 +16,12 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BetfairApiClient {
 
     private static final String BETFAIR_API_URL = "https://docs.developer.betfair.com/visualisers/betting";
 
-    @Value("${betfair.session.token}")
-    private String sessionToken;
+    private final LoginService loginService;
 
     @Value("${betfair.api.key}")
     private String apiKey;
@@ -62,7 +63,7 @@ public class BetfairApiClient {
 
     private HttpHeaders assembleHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("X-Authentication", sessionToken);
+        headers.set("X-Authentication", loginService.login().getToken());
         headers.set("X-Application", apiKey);
         return headers;
     }

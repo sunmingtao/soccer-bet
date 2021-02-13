@@ -1,6 +1,7 @@
 package com.smt.betfair.controller;
 
 import com.smt.betfair.dto.response.ApiResponse;
+import com.smt.betfair.dto.response.LoginResponse;
 import com.smt.betfair.enums.MarketType;
 import com.smt.betfair.model.Odds;
 import com.smt.betfair.service.BetfairApiClient;
@@ -51,7 +52,7 @@ public class HomeController {
     }
 
     @GetMapping("sessionToken")
-    public String getSessionToken() {
-        return loginService.getSessionToken();
+    public LoginResponse getSessionToken() {
+        return loginService.login();
     }
 }
