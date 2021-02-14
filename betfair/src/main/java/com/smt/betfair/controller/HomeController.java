@@ -2,8 +2,10 @@ package com.smt.betfair.controller;
 
 import com.smt.betfair.dto.response.ApiResponse;
 import com.smt.betfair.dto.response.LoginResponse;
+import com.smt.betfair.entity.TimedOdds;
 import com.smt.betfair.enums.MarketType;
 import com.smt.betfair.model.Odds;
+import com.smt.betfair.repo.TimedOddsRepo;
 import com.smt.betfair.service.BetfairApiClient;
 import com.smt.betfair.service.BetfairApiService;
 import com.smt.betfair.service.LoginService;
@@ -19,6 +21,7 @@ public class HomeController {
     private final BetfairApiClient betfairApiClient;
     private final BetfairApiService betfairApiService;
     private final LoginService loginService;
+    private final TimedOddsRepo timedOddsRepo;
 
     @GetMapping("/listEventsTypes")
     public String listEventTypes() {
@@ -48,7 +51,9 @@ public class HomeController {
 
     @GetMapping("lastTradedPrices/{eventId}")
     public Odds findLastTradedPrices(@PathVariable int eventId) {
-        return betfairApiService.findLastTradedPrices(eventId);
+        Odds odds = betfairApiService.findLastTradedPrices(eventId);
+        timedOddsRepo.save(odds.toEntity());
+        return odds;
     }
 
     @GetMapping("sessionToken")
