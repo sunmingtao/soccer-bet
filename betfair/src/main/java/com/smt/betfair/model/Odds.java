@@ -22,6 +22,9 @@ public class Odds {
     private final double drawOdds;
 
     public TimedOdds toEntity() {
+        if (eventName == null) {
+            return null;
+        }
         Date now = new Date();
         String id = eventId + "-" + DATE_FORMATTER.format(now);
         return new TimedOdds(id, eventId, eventName, winOdds, lossOdds, drawOdds, now);
