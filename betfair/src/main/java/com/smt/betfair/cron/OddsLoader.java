@@ -27,7 +27,7 @@ public class OddsLoader {
         EVENT_IDS.forEach(this::loadAndPersistOdds);
     }
 
-    private void loadAndPersistOdds(int eventId) {
+    private void loadAndPersistOdds(long eventId) {
         log.info("Load odds for event id {}", eventId);
         Optional.ofNullable(betfairApiService.findLastTradedPrices(eventId))
                 .map(Odds::toEntity).ifPresent(timedOddsRepo::save);

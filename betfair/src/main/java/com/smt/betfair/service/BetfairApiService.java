@@ -14,7 +14,7 @@ import java.util.List;
 public class BetfairApiService {
     private final BetfairApiClient betfairApiClient;
 
-    public Odds findLastTradedPrices(int eventId) {
+    public Odds findLastTradedPrices(long eventId) {
         ApiResponse eventResponse = betfairApiClient.findEventByEventId(eventId);
         String eventName = eventResponse.getFirstResult().map(result -> result.getEvent().getName()).orElse(null);
         if (eventName == null) {

@@ -40,14 +40,14 @@ public class BetfairApiClient {
         return restTemplate.postForObject(BETFAIR_API_URL, entity, ApiResponse.class);
     }
 
-    public ApiResponse findEventByEventId(int eventId) {
+    public ApiResponse findEventByEventId(long eventId) {
         RestTemplate restTemplate = new RestTemplate();
         String body = assembleRequestForListEvents(List.of(), List.of(eventId));
         HttpEntity<String> entity = new HttpEntity<>(body, assembleHeaders());
         return restTemplate.postForObject(BETFAIR_API_URL, entity, ApiResponse.class);
     }
 
-    public ApiResponse findMarketId(int eventId, MarketType marketType) {
+    public ApiResponse findMarketId(long eventId, MarketType marketType) {
         RestTemplate restTemplate = new RestTemplate();
         String body = assembleRequestForFindMarketId(eventId, marketType);
         HttpEntity<String> entity = new HttpEntity<>(body, assembleHeaders());
@@ -77,7 +77,7 @@ public class BetfairApiClient {
     }
 
     @SneakyThrows(JsonProcessingException.class)
-    private String assembleRequestForListEvents(List<Integer> eventTypeIds, List<Integer> eventIds) {
+    private String assembleRequestForListEvents(List<Integer> eventTypeIds, List<Long> eventIds) {
         ObjectMapper mapper = new ObjectMapper();
         ApiRequest request = new ApiRequest();
         request.setMethod("SportsAPING/v1.0/listEvents");
@@ -87,7 +87,7 @@ public class BetfairApiClient {
     }
 
     @SneakyThrows(JsonProcessingException.class)
-    private String assembleRequestForFindMarketId(int eventId, MarketType marketType) {
+    private String assembleRequestForFindMarketId(long eventId, MarketType marketType) {
         ObjectMapper mapper = new ObjectMapper();
         ApiRequest request = new ApiRequest();
         request.setMethod("SportsAPING/v1.0/listMarketCatalogue");

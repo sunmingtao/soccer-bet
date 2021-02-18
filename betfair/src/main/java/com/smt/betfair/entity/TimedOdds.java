@@ -5,8 +5,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
 import com.smt.betfair.converter.MatchOddsDateCustomConverter;
 import lombok.*;
-import org.apache.commons.lang3.time.FastDateFormat;
-
 import java.util.Date;
 
 @Setter
@@ -18,7 +16,7 @@ import java.util.Date;
 public class TimedOdds {
 
     private String id;
-    private int eventId;
+    private long eventId;
     private String eventName;
     private double winOdds;
     private double lossOdds;

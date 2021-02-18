@@ -36,7 +36,7 @@ public class HomeController {
      * e.g. http://localhost:8080/marketId/30267579/MATCH_ODDS
      */
     @GetMapping("/marketId/{eventId}/{marketType}")
-    public ApiResponse findMarketId(@PathVariable int eventId, @PathVariable MarketType marketType) {
+    public ApiResponse findMarketId(@PathVariable long eventId, @PathVariable MarketType marketType) {
         return betfairApiClient.findMarketId(eventId, marketType);
     }
 
@@ -49,7 +49,7 @@ public class HomeController {
     }
 
     @GetMapping("lastTradedPrices/{eventId}")
-    public Odds findLastTradedPrices(@PathVariable int eventId) {
+    public Odds findLastTradedPrices(@PathVariable long eventId) {
         return betfairApiService.findLastTradedPrices(eventId);
     }
 

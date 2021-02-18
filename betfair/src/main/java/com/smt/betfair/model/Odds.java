@@ -15,7 +15,7 @@ public class Odds {
 
     private static final FastDateFormat DATE_FORMATTER = FastDateFormat.getInstance("yyyy/MM/dd HH:mm");
 
-    private final int eventId;
+    private final long eventId;
     private final String eventName;
     private final double winOdds;
     private final double lossOdds;
