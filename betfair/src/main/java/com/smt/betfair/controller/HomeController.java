@@ -2,6 +2,7 @@ package com.smt.betfair.controller;
 
 import com.smt.betfair.dto.response.ApiResponse;
 import com.smt.betfair.dto.response.LoginResponse;
+import com.smt.betfair.entity.TimedOdds;
 import com.smt.betfair.enums.MarketType;
 import com.smt.betfair.model.Odds;
 import com.smt.betfair.repo.TimedOddsRepo;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,6 +54,11 @@ public class HomeController {
     @GetMapping("lastTradedPrices/{eventId}")
     public Odds findLastTradedPrices(@PathVariable long eventId) {
         return betfairApiService.findLastTradedPrices(eventId);
+    }
+
+    @GetMapping("timedOdds/{eventId}")
+    public List<TimedOdds> findTimedOdds(@PathVariable long eventId) {
+        return timedOddsRepo.findByEventId(eventId);
     }
 
     @GetMapping("sessionToken")

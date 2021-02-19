@@ -8,5 +8,5 @@ import java.util.List;
 
 @EnableScan
 public interface TimedOddsRepo extends CrudRepository<TimedOdds, String> {
-    List<TimedOdds> findByEventId(String season);
+    List<TimedOdds> findByEventId(long eventId);
 }

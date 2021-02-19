@@ -4,6 +4,7 @@ import com.smt.betfair.dto.response.ApiResponse;
 import com.smt.betfair.dto.response.Result;
 import com.smt.betfair.enums.MarketType;
 import com.smt.betfair.model.Odds;
+import com.smt.betfair.repo.TimedOddsRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,4 +33,5 @@ public class BetfairApiService {
         }
         return new Odds(eventId, eventName, lastTradedPrice.get(0), lastTradedPrice.get(1), lastTradedPrice.get(2));
     }
+
 }

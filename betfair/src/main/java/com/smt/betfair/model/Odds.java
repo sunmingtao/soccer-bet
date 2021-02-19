@@ -29,4 +29,6 @@ public class Odds {
         String id = eventId + "-" + DATE_FORMATTER.format(now);
         return new TimedOdds(id, eventId, eventName, winOdds, lossOdds, drawOdds, now);
     }
+
+
 }
