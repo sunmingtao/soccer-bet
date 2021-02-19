@@ -17,8 +17,12 @@ export default {
       datacollection: null
     }
   },
-  mounted () {
-    this.fillData()
+  beforeMount() {
+    this.fillData();
+
+    this.$http.get("timedOdds/30186200").then(response => {
+      console.log(response.data);
+    });
   },
   methods: {
     fillData () {
