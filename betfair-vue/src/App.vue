@@ -1,6 +1,6 @@
 <template>
   <div class="small">
-    <line-chart :chartData="datacollection"></line-chart>
+    <line-chart :chart-data="datacollection"></line-chart>
     <button @click="fillData()">Randomize</button>
   </div>
 </template>
@@ -14,31 +14,40 @@ export default {
   },
   data () {
     return {
-      datacollection: null
+      datacollection: {}
     }
   },
   beforeMount() {
-    this.fillData();
 
-    this.$http.get("timedOdds/30186200").then(response => {
+    this.$http.get("timedOdds/30186235").then(response => {
       console.log(response.data);
+      const labels = response.data.map(x => x.dateTime)
+      const winOdds = response.data.map(x => x.winOdds);
+      const lossOdds = response.data.map(x => x.lossOdds);
+      const drawOdds = response.data.map(x => x.drawOdds);
+      this.fillData(labels, winOdds, lossOdds, drawOdds);
     });
   },
   methods: {
-    fillData () {
+    fillData (labels, winOdds, lossOdds, drawOdds) {
       this.datacollection = {
-        labels: ['1', '2'],
+        labels: labels,
         datasets: [
           {
-            label: 'Data One',
-            fill: false,
-            borderColor: 'black',
-            data: [this.getRandomInt(), this.getRandomInt()]
-          }, {
-            label: 'Data two',
+            label: 'Win odds',
             fill: false,
             borderColor: 'red',
-            data: [this.getRandomInt(), this.getRandomInt()]
+            data: winOdds
+          }, {
+            label: 'Loss odds',
+            fill: false,
+            borderColor: 'green',
+            data: lossOdds
+          }, {
+            label: 'Draw odds',
+            fill: false,
+            borderColor: 'black',
+            data: drawOdds
           }
         ]
       }

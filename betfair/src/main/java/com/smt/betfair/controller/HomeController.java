@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -58,7 +60,8 @@ public class HomeController {
 
     @GetMapping("timedOdds/{eventId}")
     public List<TimedOdds> findTimedOdds(@PathVariable long eventId) {
-        return timedOddsRepo.findByEventId(eventId);
+        List<TimedOdds> odds = timedOddsRepo.findByEventId(eventId);
+        return odds.stream().sorted(Comparator.comparing(TimedOdds::getDateTime)).collect(Collectors.toList());
     }
 
     @GetMapping("sessionToken")
