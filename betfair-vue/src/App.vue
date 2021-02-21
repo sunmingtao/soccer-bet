@@ -1,7 +1,6 @@
 <template>
-  <div class="small">
-    <line-chart :chart-data="datacollection"></line-chart>
-    <button @click="fillData()">Randomize</button>
+  <div class="">
+    <line-chart :chart-data="datacollection" :options="chartOptions"></line-chart>
   </div>
 </template>
 
@@ -14,7 +13,12 @@ export default {
   },
   data () {
     return {
-      datacollection: {}
+      datacollection: {},
+      chartOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+        width: 800
+      }
     }
   },
   beforeMount() {
@@ -34,20 +38,10 @@ export default {
         labels: labels,
         datasets: [
           {
-            label: 'Win odds',
-            fill: false,
-            borderColor: 'red',
-            data: winOdds
-          }, {
             label: 'Loss odds',
             fill: false,
             borderColor: 'green',
             data: lossOdds
-          }, {
-            label: 'Draw odds',
-            fill: false,
-            borderColor: 'black',
-            data: drawOdds
           }
         ]
       }
