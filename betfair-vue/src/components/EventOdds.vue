@@ -17,7 +17,6 @@
 import OddsChart from './OddsChart.vue'
 
 export default {
-  name: 'app',
   components: {
     'odds-chart': OddsChart
   }

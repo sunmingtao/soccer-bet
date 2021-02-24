@@ -9,7 +9,7 @@ Vue.use(VueResource);
 Vue.use(VueRouter);
 
 const routes = [
-  { path: '/odds', component: EventOdds },
+  { path: '/', component: EventOdds },
   {
     path: '/events',
     component: Events

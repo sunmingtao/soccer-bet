@@ -1,22 +1,31 @@
 <template>
   <div class="">
-    <odds-chart :event-id="30186200"></odds-chart>
-    <odds-chart :event-id="30186226"></odds-chart>
+    <ul>
+      <li v-for="event in events" :key="event.id">
+        {{ event }}
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
 
-import OddsChart from './OddsChart.vue'
-
 export default {
-  name: 'app',
-  components: {
-    'odds-chart': OddsChart
-  }
+  data () {
+    return {
+      events: {}
+    }
+  },
+  beforeMount() {
+
+    this.$http.get("events/1").then(response => {
+      this.events = response.data.result.map(r => r.event);
+    });
+  },
 }
 </script>
 
 <style lang="scss">
 
 </style>
+
