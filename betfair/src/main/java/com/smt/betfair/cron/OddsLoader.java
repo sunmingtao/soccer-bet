@@ -17,7 +17,8 @@ import java.util.Optional;
 @Slf4j
 public class OddsLoader {
 
-    private static final List<Integer> EVENT_IDS = List.of(30186200, 30186226, 30186235);
+    private static final List<Integer> EVENT_IDS = List.of(30186200, 30186226, 30186235,
+            30304098, 30303976, 30303813, 30289008, 30289005, 30288633);
 
     private final BetfairApiService betfairApiService;
     private final TimedOddsRepo timedOddsRepo;

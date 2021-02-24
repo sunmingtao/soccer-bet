@@ -31,16 +31,17 @@ export default {
       const winOdds = response.data.map(x => x.winOdds);
       const lossOdds = response.data.map(x => x.lossOdds);
       const drawOdds = response.data.map(x => x.drawOdds);
-      this.fillData(labels, winOdds, lossOdds, drawOdds);
+      const datasetsLabel = response.data[0].eventName;
+      this.fillData(labels, datasetsLabel, winOdds, lossOdds, drawOdds);
     });
   },
   methods: {
-    fillData (labels, winOdds, lossOdds, drawOdds) {
+    fillData (labels, datasetsLabel, winOdds, lossOdds, drawOdds) {
       this.datacollection = {
         labels: labels,
         datasets: [
           {
-            label: 'Loss odds',
+            label: datasetsLabel,
             fill: false,
             borderColor: 'green',
             data: lossOdds
