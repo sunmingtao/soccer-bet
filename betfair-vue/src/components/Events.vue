@@ -1,6 +1,10 @@
 <template>
   <div class="">
-    <v-client-table :data="events" :columns="columns" :options="options"> </v-client-table>
+    <v-client-table :data="events" :columns="columns" :options="options">
+      <div slot="action" slot-scope="props">
+        <button>Add to watch</button> {{props.row.id}}
+      </div>
+    </v-client-table>
   </div>
 </template>
 
@@ -10,13 +14,14 @@ export default {
   data () {
     return {
       events: [],
-      columns: ['id', 'name', 'countryCode', 'openDate'],
+      columns: ['id', 'name', 'countryCode', 'openDate', 'action'],
       options: {
         headings: {
           id: 'Event ID',
           name: 'Event Name',
           countryCode: 'Country Code',
-          openDate: 'Match date'
+          openDate: 'Match date',
+          action: 'Action'
         },
         sortable: ['countryCode', 'openDate'],
         perPage: 1000,
