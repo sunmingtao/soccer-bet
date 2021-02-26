@@ -1,19 +1,24 @@
 package com.smt.betfair.service;
 
 import com.smt.betfair.dto.response.ApiResponse;
+import com.smt.betfair.dto.response.Event;
 import com.smt.betfair.dto.response.Result;
+import com.smt.betfair.entity.MatchUnderWatch;
 import com.smt.betfair.enums.MarketType;
 import com.smt.betfair.model.Odds;
-import com.smt.betfair.repo.TimedOddsRepo;
+import com.smt.betfair.repo.MatchUnderWatchRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import org.apache.commons.collections4.IterableUtils;
 
 @Service
 @RequiredArgsConstructor
 public class BetfairApiService {
     private final BetfairApiClient betfairApiClient;
+    private final MatchUnderWatchRepo matchUnderWatchRepo;
 
     public Odds findLastTradedPrices(long eventId) {
         ApiResponse eventResponse = betfairApiClient.findEventByEventId(eventId);
@@ -32,6 +37,19 @@ public class BetfairApiService {
             return null;
         }
         return new Odds(eventId, eventName, lastTradedPrice.get(0), lastTradedPrice.get(1), lastTradedPrice.get(2));
+    }
+
+    public List<Event> listEvents() {
+        ApiResponse apiResponse = betfairApiClient.listEventsByEventTypeId(1);
+        List<MatchUnderWatch> matchesUnderWatch = IterableUtils.toList(matchUnderWatchRepo.findAll());
+        List<Event> events = apiResponse.getResult().stream().map(Result::getEvent)
+                .filter(event -> isUnderWatch(event.getId(), matchesUnderWatch)).collect(Collectors.toList());
+        events.forEach(event -> event.setWatch(true));
+        return events;
+    }
+
+    private boolean isUnderWatch(long eventId, List<MatchUnderWatch> matchesUnderWatch) {
+        return matchesUnderWatch.stream().anyMatch(m -> m.getEventId() == eventId);
     }
 
 }

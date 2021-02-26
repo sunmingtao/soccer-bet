@@ -10,4 +10,5 @@ public class Event {
     private String name;
     private String countryCode;
     private String openDate;
+    private boolean watch;
 }
