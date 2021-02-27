@@ -1,6 +1,5 @@
 package com.smt.soccerbetrestapi.entity;
 
-import com.smt.soccerbetrestapi.model.Team;
 import com.smt.soccerbetrestapi.utils.SeasonUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

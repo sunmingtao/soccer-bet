@@ -6,7 +6,7 @@ import lombok.ToString;
 @Data
 @ToString
 public class Event {
-    private int id;
+    private long id;
     private String name;
     private String countryCode;
     private String openDate;

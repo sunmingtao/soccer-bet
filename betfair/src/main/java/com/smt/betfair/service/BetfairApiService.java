@@ -49,7 +49,15 @@ public class BetfairApiService {
     }
 
     private boolean isUnderWatch(long eventId, List<MatchUnderWatch> matchesUnderWatch) {
-        return matchesUnderWatch.stream().anyMatch(m -> m.getEventId() == eventId);
+        return matchesUnderWatch.stream().anyMatch(m -> m.getEventIdAsLong() == eventId);
+    }
+
+    public void watchEvent(long eventId) {
+        matchUnderWatchRepo.save(new MatchUnderWatch(eventId));
+    }
+
+    public void unwatchEvent(long eventId) {
+        matchUnderWatchRepo.deleteById(String.valueOf(eventId));
     }
 
 }

@@ -1,6 +1,5 @@
 package com.smt.betfair.cron;
 
-import com.smt.betfair.entity.TimedOdds;
 import com.smt.betfair.model.Odds;
 import com.smt.betfair.repo.TimedOddsRepo;
 import com.smt.betfair.service.BetfairApiService;

@@ -12,11 +12,19 @@ import lombok.*;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class MatchUnderWatch {
 
-    private long eventId;
+    private String eventId;
+
+    public MatchUnderWatch (long eventIdAsLong) {
+        this.eventId = String.valueOf(eventIdAsLong);
+    }
 
     @DynamoDBHashKey
     @EqualsAndHashCode.Include
-    public long getEventId() {
+    public String getEventId() {
         return eventId;
+    }
+
+    public long getEventIdAsLong() {
+        return Long.parseLong(eventId);
     }
 }
