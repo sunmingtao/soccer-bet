@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequestMapping("soccer")
+@RequestMapping("/soccer")
 @RestController
 @RequiredArgsConstructor
 public class SoccerController {

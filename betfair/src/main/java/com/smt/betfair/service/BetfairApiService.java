@@ -42,9 +42,8 @@ public class BetfairApiService {
     public List<Event> listSoccerEvents() {
         ApiResponse apiResponse = betfairApiClient.listEventsByEventTypeId(1);
         List<MatchUnderWatch> matchesUnderWatch = IterableUtils.toList(matchUnderWatchRepo.findAll());
-        List<Event> events = apiResponse.getResult().stream().map(Result::getEvent)
-                .filter(event -> isUnderWatch(event.getId(), matchesUnderWatch)).collect(Collectors.toList());
-        events.forEach(event -> event.setWatch(true));
+        List<Event> events = apiResponse.getResult().stream().map(Result::getEvent).collect(Collectors.toList());
+        events.stream().filter(event -> isUnderWatch(event.getId(), matchesUnderWatch)).forEach(event -> event.setWatch(true));
         return events;
     }
 
