@@ -39,7 +39,7 @@ public class BetfairApiService {
         return new Odds(eventId, eventName, lastTradedPrice.get(0), lastTradedPrice.get(1), lastTradedPrice.get(2));
     }
 
-    public List<Event> listEvents() {
+    public List<Event> listSoccerEvents() {
         ApiResponse apiResponse = betfairApiClient.listEventsByEventTypeId(1);
         List<MatchUnderWatch> matchesUnderWatch = IterableUtils.toList(matchUnderWatchRepo.findAll());
         List<Event> events = apiResponse.getResult().stream().map(Result::getEvent)

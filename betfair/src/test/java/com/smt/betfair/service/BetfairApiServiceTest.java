@@ -59,7 +59,7 @@ class BetfairApiServiceTest {
             Mockito.when(result2.getEvent()).thenReturn(event2);
             Mockito.when(event1.getId()).thenReturn(EVENT1_ID);
             Mockito.when(event2.getId()).thenReturn(EVENT2_ID);
-            List<Event> events = betfairApiService.listEvents();
+            List<Event> events = betfairApiService.listSoccerEvents();
             Assertions.assertEquals(1, events.size());
             Mockito.verify(event1, Mockito.times(1)).setWatch(true);
             Mockito.verify(event2, Mockito.times(0)).setWatch(true);
