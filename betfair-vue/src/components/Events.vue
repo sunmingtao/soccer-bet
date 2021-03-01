@@ -2,7 +2,12 @@
   <div class="">
     <v-client-table :data="events" :columns="columns" :options="options">
       <div slot="action" slot-scope="props">
-        <button>Add to watch</button> {{props.row.watch}}
+        <div v-if="props.row.watch">
+          <button @click="removeFromWatch(props.row.id)">Remove from watch</button>
+        </div>
+        <div v-else>
+          <button @click="addToWatch(props.row.id)">Add to watch</button>
+        </div>
       </div>
     </v-client-table>
   </div>
@@ -27,6 +32,22 @@ export default {
         perPage: 1000,
         perPageValues: [1000, 2000]
       }
+    }
+  },
+  methods: {
+    addToWatch(eventId) {
+      this.$http.put('soccer/watch/' + eventId).then(() => {
+        this.events.filter(event => event.id === eventId)[0].watch = true;
+      }, error => {
+        console.log(error);
+      });
+    },
+    removeFromWatch(eventId) {
+      this.$http.delete('soccer/unwatch/' + eventId).then(() => {
+        this.events.filter(event => event.id === eventId)[0].watch = false;
+      }, error => {
+        console.log(error);
+      });
     }
   },
   beforeMount() {

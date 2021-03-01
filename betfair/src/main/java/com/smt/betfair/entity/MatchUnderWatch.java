@@ -1,6 +1,7 @@
 package com.smt.betfair.entity;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import lombok.*;
 
@@ -24,6 +25,7 @@ public class MatchUnderWatch {
         return eventId;
     }
 
+    @DynamoDBIgnore
     public long getEventIdAsLong() {
         return Long.parseLong(eventId);
     }
