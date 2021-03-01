@@ -8,6 +8,7 @@ class BetfairApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// Placeholder
 	}
 
 }

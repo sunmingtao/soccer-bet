@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -16,15 +15,12 @@ import java.util.Optional;
 @Slf4j
 public class OddsLoader {
 
-    private static final List<Integer> EVENT_IDS = List.of(30186200, 30186226, 30186235,
-            30304098, 30303976, 30303813, 30289008, 30289005, 30288633);
-
     private final BetfairApiService betfairApiService;
     private final TimedOddsRepo timedOddsRepo;
 
     @Scheduled(cron = "${load.odds.job.cron}")
     public void load() {
-        EVENT_IDS.forEach(this::loadAndPersistOdds);
+        betfairApiService.listWatchEventsIds().forEach(this::loadAndPersistOdds);
     }
 
     private void loadAndPersistOdds(long eventId) {

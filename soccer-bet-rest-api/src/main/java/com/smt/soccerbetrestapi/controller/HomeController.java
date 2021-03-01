@@ -49,7 +49,7 @@ public class HomeController {
     @GetMapping("/seasons")
     public List<String> seasons() {
         return IntStream.range(MIN_SEASON, Integer.parseInt(soccerSeason) + 1)
-                .mapToObj(i -> String.valueOf(i)).collect(Collectors.toList());
+                .mapToObj(String::valueOf).collect(Collectors.toList());
     }
 
     @GetMapping("/teams/{season}/{league}")

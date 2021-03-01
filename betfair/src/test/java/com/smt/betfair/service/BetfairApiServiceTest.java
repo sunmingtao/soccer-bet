@@ -48,7 +48,7 @@ class BetfairApiServiceTest {
     }
 
     @Nested
-    class Test_listEvents {
+    class TestListEvents {
         @Test
         void test() {
             Mockito.when(betfairApiClient.listEventsByEventTypeId(1)).thenReturn(apiResponse);

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.apache.commons.collections4.IterableUtils;
 
 @Service
@@ -59,4 +61,7 @@ public class BetfairApiService {
         matchUnderWatchRepo.deleteById(String.valueOf(eventId));
     }
 
+    public List<Long> listWatchEventsIds() {
+        return StreamSupport.stream(matchUnderWatchRepo.findAll().spliterator(), false).map(MatchUnderWatch::getEventIdAsLong).collect(Collectors.toList());
+    }
 }
