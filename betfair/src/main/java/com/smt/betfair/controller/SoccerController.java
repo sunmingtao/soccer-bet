@@ -19,4 +19,5 @@ public class SoccerController {
     public List<Event> listEvents() {
         return betfairApiService.listSoccerEvents();
     }
+
 }

@@ -2,7 +2,7 @@
   <div class="">
     <v-client-table :data="events" :columns="columns" :options="options">
       <div slot="action" slot-scope="props">
-        <button>Add to watch</button> {{props.row.id}}
+        <button>Add to watch</button> {{props.row.watch}}
       </div>
     </v-client-table>
   </div>
@@ -30,8 +30,8 @@ export default {
     }
   },
   beforeMount() {
-    this.$http.get("events/1").then(response => {
-      this.events = response.data.result.map(r => r.event);
+    this.$http.get("soccer/events").then(response => {
+      this.events = response.data;
     });
   },
 }
