@@ -4,7 +4,9 @@ import com.smt.betfair.dto.response.ApiResponse;
 import com.smt.betfair.dto.response.Event;
 import com.smt.betfair.dto.response.Result;
 import com.smt.betfair.entity.MatchUnderWatch;
+import com.smt.betfair.repo.HistoryEventRepo;
 import com.smt.betfair.repo.MatchUnderWatchRepo;
+import com.smt.betfair.repo.TimedOddsRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,10 +43,14 @@ class BetfairApiServiceTest {
     private Event event1;
     @Mock
     private Event event2;
+    @Mock
+    private HistoryEventRepo historyEventRepo;
+    @Mock
+    private TimedOddsRepo timedOddsRepo;
 
     @BeforeEach
     void setup() {
-        betfairApiService = new BetfairApiService(betfairApiClient, matchUnderWatchRepo);
+        betfairApiService = new BetfairApiService(betfairApiClient, matchUnderWatchRepo, historyEventRepo, timedOddsRepo);
     }
 
     @Nested
