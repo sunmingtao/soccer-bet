@@ -8,6 +8,7 @@ import com.smt.betfair.model.Odds;
 import com.smt.betfair.repo.TimedOddsRepo;
 import com.smt.betfair.service.BetfairApiClient;
 import com.smt.betfair.service.BetfairApiService;
+import com.smt.betfair.service.BetfairPriceService;
 import com.smt.betfair.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,7 @@ public class HomeController {
 
     private final BetfairApiClient betfairApiClient;
     private final BetfairApiService betfairApiService;
+    private final BetfairPriceService betfairPriceService;
     private final LoginService loginService;
     private final TimedOddsRepo timedOddsRepo;
 
@@ -55,7 +57,7 @@ public class HomeController {
 
     @GetMapping("lastTradedPrices/{eventId}")
     public Odds findLastTradedPrices(@PathVariable long eventId) {
-        return betfairApiService.findLastTradedPrices(eventId);
+        return betfairPriceService.findLastTradedPrices(eventId);
     }
 
     @GetMapping("timedOdds/{eventId}")
