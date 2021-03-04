@@ -5,7 +5,6 @@ import com.smt.betfair.dto.response.Event;
 import com.smt.betfair.dto.response.Result;
 import com.smt.betfair.entity.HistoryEvent;
 import com.smt.betfair.entity.MatchUnderWatch;
-import com.smt.betfair.enums.MarketType;
 import com.smt.betfair.model.Odds;
 import com.smt.betfair.repo.HistoryEventRepo;
 import com.smt.betfair.repo.MatchUnderWatchRepo;
